@@ -3,12 +3,6 @@ package ru.rivendel.sagittarius.classes;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.support.annotation.NonNull;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 import ru.rivendel.sagittarius.Database;
 import ru.rivendel.sagittarius.Environment;
