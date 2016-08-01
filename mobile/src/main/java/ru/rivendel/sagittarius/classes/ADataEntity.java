@@ -9,11 +9,14 @@ import ru.rivendel.sagittarius.Environment;
 /**
  * Created by elanse on 01.08.16.
  */
-public abstract class ADataEntity {
+public abstract class ADataEntity extends ADataEventObject {
+
+
 
     public int _id;
     public String tableName;
     protected ContentValues cv;
+
 
     protected ADataEntity(String tableName)
     {
@@ -23,6 +26,8 @@ public abstract class ADataEntity {
 
     abstract int cursorToFields(Cursor c);
     abstract void setData();
+
+
 
     public int loadMe(int _id)
     {
@@ -38,6 +43,7 @@ public abstract class ADataEntity {
                 res = _id;
                 cursorToFields(c);
                 c.close();
+                if (loadListener!=null) loadListener.onDataLoad();
             }
         }
         catch(SQLException sql_ex)
@@ -63,6 +69,7 @@ public abstract class ADataEntity {
                 retID = (int)Environment.db.getWritableDatabase().insert(tableName, null, cv);
                 _id=retID;
             }
+            if (saveListener!=null) saveListener.onDataSave();
         }
         catch(SQLException sql_ex)
         {
@@ -71,3 +78,4 @@ public abstract class ADataEntity {
         return retID;
     }
 }
+
