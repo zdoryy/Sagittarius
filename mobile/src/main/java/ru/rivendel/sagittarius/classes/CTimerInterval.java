@@ -1,11 +1,6 @@
 package ru.rivendel.sagittarius.classes;
-
-import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.SQLException;
-
 import ru.rivendel.sagittarius.Database;
-import ru.rivendel.sagittarius.Environment;
 
 /**
  * Created by elanse on 31.07.16.
@@ -21,14 +16,14 @@ public class CTimerInterval extends ADataEntity
     public int waking;
     public int advance;
 
-    public CTimerInterval(String tableName)
+    public CTimerInterval()
     {
-        super(tableName);
+        super(Database.tableTimerInterval);
     }
 
-    public CTimerInterval(String tableName,int _id)
+    public CTimerInterval(int _id)
     {
-        this(tableName);
+        this();
         loadMe(_id);
     }
 
