@@ -11,9 +11,8 @@ import ru.rivendel.sagittarius.Environment;
  * Created by elanse on 31.07.16.
  */
 
-public class CTimerInterval extends ATableMapper
+public class CTimerInterval extends ADataEntity
 {
-    public int _id;
     public int _id_program;
     public String title;
     public int order;
@@ -21,22 +20,19 @@ public class CTimerInterval extends ATableMapper
     public String sound;
     public int waking;
     public int advance;
-    public static String tableName = Database.tableTimerInterval;
 
-    private ContentValues cv;
-
-    public CTimerInterval()
+    public CTimerInterval(String tableName)
     {
-        cv = new ContentValues();
+        super(tableName);
     }
 
-    public CTimerInterval(int _id)
+    public CTimerInterval(String tableName,int _id)
     {
-        this();
+        this(tableName);
         loadMe(_id);
     }
 
-    private void setData()
+    protected void setData()
     {
         if (_id>0) cv.put("_id",_id);
         cv.put(Database.tableTimerIntervalIDProgram,_id_program);
@@ -48,7 +44,7 @@ public class CTimerInterval extends ATableMapper
         cv.put(Database.tableTimerIntervalAdvance,advance);
     }
 
-    private int cursorToFields(Cursor c)
+    protected int cursorToFields(Cursor c)
     {
         int res=0;
         try
@@ -67,52 +63,5 @@ public class CTimerInterval extends ATableMapper
             res=-1;
         }
         return res;
-    }
-
-    public int loadMe(int _id)
-    {
-        int res=0;
-        try
-        {
-            Cursor c =
-                    Environment.db.getWritableDatabase().query(tableName,/*columns*/null,
-                            /*selection*/"_id = ?",/*selectionArgs*/new String[] {String.valueOf(_id)},
-                            /*groupBy*/null,/*having*/null,/*orderBy*/null);
-            if (c!=null)
-            {
-                res = _id;
-                cursorToFields(c);
-                c.close();
-            }
-        }
-        catch(SQLException sql_ex)
-        {
-            res=-1;
-        }
-        return res;
-    }
-
-    public int saveMe()
-    {
-        int retID;
-        try{
-            setData();
-            if (_id>0)
-            { // обновление
-                Environment.db.getWritableDatabase().update(tableName, cv, "_id = ?",
-                    new String[] { String.valueOf(_id) });
-                retID = _id;
-            }
-            else
-            {  // вставка
-                retID = (int)Environment.db.getWritableDatabase().insert(tableName, null, cv);
-                _id=retID;
-            }
-        }
-        catch(SQLException sql_ex)
-        {
-            retID=-1;
-        }
-        return retID;
     }
 }

@@ -10,7 +10,7 @@ import ru.rivendel.sagittarius.Database;
 /**
  * Created by elanse on 31.07.16.
  */
-public class LTimerInterval extends ATableMapper {
+public class LTimerInterval  {
 
     public int _id_program;
 
