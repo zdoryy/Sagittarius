@@ -9,67 +9,67 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class Database extends SQLiteOpenHelper {
 
-    static final String dbName="Sagittarius";                     // имя базы данных
+    static final String dbName="Sagittarius";                            // имя базы данных
 
-    static final String tableTopic = "topic";                     // таблица разделов-тем
-    static final String tableTask = "task";                       // таблица упражений - заданий
-    static final String tableTimerProgram = "timer_program";      // таблица программ таймера
+    public static final String tableTopic = "topic";                     // таблица разделов-тем
+    public static final String tableTask = "task";                       // таблица упражений - заданий
+    public static final String tableTimerProgram = "timer_program";      // таблица программ таймера
     public static final String tableTimerInterval = "timer_interval";    // таблица интервалов таймера
-    static final String tableRegister = "register";               // таблица регистрации исполнения
-    static final String tableTerm = "term";                       // таблица терминов-словарь
-    static final String tableAdvice = "advice";                   // таблица рекомендаций
-    static final String tableNote = "note";                       // таблица заметок пользователя
+    public static final String tableRegister = "register";               // таблица регистрации исполнения
+    public static final String tableTerm = "term";                       // таблица терминов-словарь
+    public static final String tableAdvice = "advice";                   // таблица рекомендаций
+    public static final String tableNote = "note";                       // таблица заметок пользователя
 
-    static final String tableTopicTitle = "title";                // название темы
-    static final String tableTopicOrder = "order";                // сортировка
+    public static final String tableTopicTitle = "title";                // название темы
+    public static final String tableTopicOrder = "_order";               // сортировка
 
-    static final String tableTaskIDTopic = "topic";               // внешний ключ к таблице Topic
-    static final String tableTaskTitle = "title";                 // название задачи
-    static final String tableTaskOrder = "order";                 // сортировка
-    static final String tableTaskCount = "count";                 // количество повторов задачи
-    static final String tableTaskPeriod = "period";               // периодичность задачи
-    static final String tableTaskMode = "mode";                   // режим задачи 1/2/3
-    static final String tableTaskAlarm = "alarm";                 // режим уведомления
-    static final String tableTaskTime = "time";                   // конкретное время в сек
+    public static final String tableTaskIDTopic = "topic";               // внешний ключ к таблице Topic
+    public static final String tableTaskTitle = "title";                 // название задачи
+    public static final String tableTaskOrder = "_order";                // сортировка
+    public static final String tableTaskCount = "count";                 // количество повторов задачи
+    public static final String tableTaskPeriod = "period";               // периодичность задачи
+    public static final String tableTaskMode = "mode";                   // режим задачи 1/2/3
+    public static final String tableTaskAlarm = "alarm";                 // режим уведомления
+    public static final String tableTaskTime = "time";                   // конкретное время в сек
 
-    static final String tableTimerProgramTitle = "title";                   // название программы
-    static final String tableTimerProgramOrder = "order";                   // сортировка
-    static final String tableTimerProgramIDTask = "task";                   // внешний ключ к Task
-    static final String tableTimerIntervalWakingSound = "waking_sound";     // имя ресурса
-    static final String tableTimerIntervalAdvanceSound = "advance_sound";   // имя ресурса
-    static final String tableTimerIntervalFinishSound = "finish_sound";     // имя ресурса
+    static final String tableTimerProgramTitle = "title";                  // название программы
+    static final String tableTimerProgramOrder = "_order";                 // сортировка
+    static final String tableTimerProgramIDTask = "task";                  // внешний ключ к Task
+    static final String tableTimerProgramWakingSound = "waking_sound";     // имя ресурса
+    static final String tableTimerProgramAdvanceSound = "advance_sound";   // имя ресурса
+    static final String tableTimerProgramFinishSound = "finish_sound";     // имя ресурса
 
     public static final String tableTimerIntervalIDProgram = "program"; // внешний ключ к таблице TimerProgram
     public static final String tableTimerIntervalTitle = "title";       // название интервала
-    public static final String tableTimerIntervalOrder = "order";       // сортировка
+    public static final String tableTimerIntervalOrder = "_order";      // сортировка
     public static final String tableTimerIntervalTime = "time";         // длительность в сек
     public static final String tableTimerIntervalSound = "sound";       // имя ресурса для finish sound
     public static final String tableTimerIntervalWaking = "waking";     // режим доп. напоминания + или -
     public static final String tableTimerIntervalAdvance = "advance";   // режим предварительного увдл, сек
 
-    static final String tableRegisterIDTask = "task";            // внешний ключ к таблице Task
-    static final String tableRegisterTime = "time";              // время регистрации в сек с 1970
-    static final String tableRegisterValue = "value";            // числовой параметр
-    static final String tableRegisterComment = "comment";        // строковый комментарий
+    public static final String tableRegisterIDTask = "task";            // внешний ключ к таблице Task
+    public static final String tableRegisterTime = "time";              // время регистрации в сек с 1970
+    public static final String tableRegisterValue = "value";            // числовой параметр
+    public static final String tableRegisterComment = "comment";        // строковый комментарий
 
-    static final String tableTermTitle = "title";                // название
-    static final String tableTermOrder = "order";                // сортировка
-    static final String tableTermIDParent = "parent";            // ключ к этой же таблице - родитель
-    static final String tableTermIDTopic = "topic";                // внешний ключ к таблице Topic
-    static final String tableTermSource = "source";              // код источника
+    public static final String tableTermTitle = "title";                // название
+    public static final String tableTermOrder = "_order";               // сортировка
+    public static final String tableTermIDParent = "parent";            // ключ к этой же таблице - родитель
+    public static final String tableTermIDTopic = "topic";              // внешний ключ к таблице Topic
+    public static final String tableTermSource = "source";              // код источника
 
-    static final String tableAdviceTitle = "title";              // заголовок
-    static final String tableAdviceOrder = "order";              // сортировка
-    static final String tableAdviceContent = "content";          // содержание
-    static final String tableAdviceIDTerm = "term";              // внешний ключ к таблице Term
-    static final String tableAdviceSource = "source";            // код источника
+    public static final String tableAdviceTitle = "title";              // заголовок
+    public static final String tableAdviceOrder = "_order";             // сортировка
+    public static final String tableAdviceContent = "content";          // содержание
+    public static final String tableAdviceIDTerm = "term";              // внешний ключ к таблице Term
+    public static final String tableAdviceSource = "source";            // код источника
 
-    static final String tableNoteTitle = "title";                // заголовок
-    static final String tableNoteContent = "content";            // содержание
-    static final String tableNoteIDTopic = "topic";              // внешний ключ к таблице Topic
-    static final String tableNoteIDTask = "task";                // внешний ключ к таблице Task
-    static final String tableNoteIDTerm = "term";                // внешний ключ к таблице Term
-    static final String tableNoteIDTime = "time";                // время создания в сек с 1970
+    public static final String tableNoteTitle = "title";                // заголовок
+    public static final String tableNoteContent = "content";            // содержание
+    public static final String tableNoteIDTopic = "topic";              // внешний ключ к таблице Topic
+    public static final String tableNoteIDTask = "task";                // внешний ключ к таблице Task
+    public static final String tableNoteIDTerm = "term";                // внешний ключ к таблице Term
+    public static final String tableNoteIDTime = "time";                // время создания в сек с 1970
 
     public Database(Context context) {
         super(context, dbName, null, 1);
@@ -99,9 +99,9 @@ public class Database extends SQLiteOpenHelper {
                 tableTimerProgramTitle + " TEXT, " +
                 tableTimerProgramOrder + " INTEGER, " +
                 tableTimerProgramIDTask + " INTEGER, " +
-                tableTimerIntervalWakingSound + " TEXT, " +
-                tableTimerIntervalAdvanceSound + " TEXT, " +
-                tableTimerIntervalFinishSound + " TEXT)");
+                tableTimerProgramWakingSound + " TEXT, " +
+                tableTimerProgramAdvanceSound + " TEXT, " +
+                tableTimerProgramFinishSound + " TEXT)");
 
         db.execSQL("CREATE TABLE " + tableTimerInterval + " (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
