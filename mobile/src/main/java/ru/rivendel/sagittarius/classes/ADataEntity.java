@@ -40,10 +40,14 @@ public abstract class ADataEntity extends ADataEventObject {
                             /*groupBy*/null,/*having*/null,/*orderBy*/null);
             if (c!=null)
             {
-                res = _id;
-                cursorToFields(c);
-                c.close();
-                if (onLoadedListener !=null) onLoadedListener.onAfterLoaded();
+                if (c.getCount()>0)
+                {
+                    res = _id;
+                    c.moveToFirst();
+                    cursorToFields(c);
+                    c.close();
+                    if (onLoadedListener !=null) onLoadedListener.onAfterLoaded();
+                }
             }
         }
         catch(SQLException sql_ex)
@@ -66,7 +70,6 @@ public abstract class ADataEntity extends ADataEventObject {
             }
             else
             {  // вставка
-                Database db = Environment.db;
                 retID = (int)Environment.db.getWritableDatabase().insert(tableName, null, cv);
                 _id=retID;
             }
@@ -79,7 +82,7 @@ public abstract class ADataEntity extends ADataEventObject {
         return retID;
     }
 
-    public int deleteMe(int _id)
+    public int deleteMe()
     {
         int retID=-1;
         try{

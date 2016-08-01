@@ -35,15 +35,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        CTimerInterval ti = new CTimerInterval();
-        ti._id_program=0;
-        ti.advance=5;
-        ti.order=1;
-        ti.sound="bla bla.mp3";
-        ti.time=15;
-        ti.title="Lust for life  - Iggy Pop";
-        ti.waking=0;
-        int id = ti.saveMe();
     }
 
     @Override
