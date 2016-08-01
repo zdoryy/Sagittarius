@@ -21,22 +21,22 @@ public class ADataEventObject {
         void onAfterDeleted();
     }
 
-    protected OnAfterLoadedDataListener loadedListener;
-    protected OnAfterSavedDataListener savedListener;
-    protected OnAfterDeletedDataListener deletedListener;
+    protected OnAfterLoadedDataListener onLoadedListener;
+    protected OnAfterSavedDataListener onSavedListener;
+    protected OnAfterDeletedDataListener onDeletedListener;
 
     public void setAfterLoadedDataListener(OnAfterLoadedDataListener listener)
     {
-        this.loadedListener = listener;
+        this.onLoadedListener = listener;
     }
 
     public void setAfterSavedDataListener(OnAfterSavedDataListener listener)
     {
-        this.savedListener = listener;
+        this.onSavedListener = listener;
     }
 
     public void setAfterDeletedData(OnAfterDeletedDataListener listener)
     {
-        this.deletedListener = listener;
+        this.onDeletedListener = listener;
     }
 }
