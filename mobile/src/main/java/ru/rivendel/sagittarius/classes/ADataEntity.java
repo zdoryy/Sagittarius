@@ -43,7 +43,7 @@ public abstract class ADataEntity extends ADataEventObject {
                 res = _id;
                 cursorToFields(c);
                 c.close();
-                if (loadedListener!=null) loadedListener.onAfterLoaded();
+                if (onLoadedListener !=null) onLoadedListener.onAfterLoaded();
             }
         }
         catch(SQLException sql_ex)
@@ -70,7 +70,7 @@ public abstract class ADataEntity extends ADataEventObject {
                 retID = (int)Environment.db.getWritableDatabase().insert(tableName, null, cv);
                 _id=retID;
             }
-            if (savedListener!=null) savedListener.onAfterSaved();
+            if (onSavedListener !=null) onSavedListener.onAfterSaved();
         }
         catch(SQLException sql_ex)
         {
@@ -86,7 +86,7 @@ public abstract class ADataEntity extends ADataEventObject {
             if (_id>0) {
                 retID = Environment.db.getWritableDatabase().delete(tableName, "_id = ?",
                         new String[] { String.valueOf(_id) });
-                if (deletedListener != null) deletedListener.onAfterDeleted();
+                if (onDeletedListener != null) onDeletedListener.onAfterDeleted();
             }
         }
         catch(SQLException sql_ex)
