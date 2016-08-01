@@ -11,7 +11,7 @@ import ru.rivendel.sagittarius.Environment;
  * Created by elanse on 31.07.16.
  */
 
-public class CTimerInterval
+public class CTimerInterval extends ATableMapper
 {
     public int _id;
     public int _id_program;
@@ -38,7 +38,7 @@ public class CTimerInterval
 
     private void setData()
     {
-        cv.put("_id",_id);
+        if (_id>0) cv.put("_id",_id);
         cv.put(Database.tableTimerIntervalIDProgram,_id_program);
         cv.put(Database.tableTimerIntervalTitle,title);
         cv.put(Database.tableTimerIntervalOrder,order);
@@ -82,6 +82,7 @@ public class CTimerInterval
             {
                 res = _id;
                 cursorToFields(c);
+                c.close();
             }
         }
         catch(SQLException sql_ex)
