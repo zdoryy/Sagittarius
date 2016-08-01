@@ -28,7 +28,6 @@ public abstract class ADataEntity extends ADataEventObject {
     abstract void setData();
 
 
-
     public int loadMe(int _id)
     {
         int res=0;
