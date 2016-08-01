@@ -1,4 +1,4 @@
-package classes;
+package ru.rivendel.sagittarius.classes;
 
 import android.content.ContentValues;
 
