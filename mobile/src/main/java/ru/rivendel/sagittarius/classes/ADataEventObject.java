@@ -6,26 +6,37 @@ package ru.rivendel.sagittarius.classes;
 // для событий внутри классов мапперов
 public class ADataEventObject {
 
-    public interface OnDataLoadListener
+    public interface OnAfterLoadedDataListener
     {
-        void onDataLoad();
+        void onAfterLoaded();
     }
 
-    public interface OnDataSaveListener
+    public interface OnAfterSavedDataListener
     {
-        void onDataSave();
+        void onAfterSaved();
     }
 
-    protected OnDataLoadListener loadListener;
-    protected OnDataSaveListener saveListener;
-
-    public void setLoadDataListener(OnDataLoadListener listener)
+    public interface OnAfterDeletedDataListener
     {
-        this.loadListener = listener;
+        void onAfterDeleted();
     }
 
-    public void setSaveDataListener(OnDataSaveListener listener)
+    protected OnAfterLoadedDataListener loadedListener;
+    protected OnAfterSavedDataListener savedListener;
+    protected OnAfterDeletedDataListener deletedListener;
+
+    public void setAfterLoadedDataListener(OnAfterLoadedDataListener listener)
     {
-        this.saveListener = listener;
+        this.loadedListener = listener;
+    }
+
+    public void setAfterSavedDataListener(OnAfterSavedDataListener listener)
+    {
+        this.savedListener = listener;
+    }
+
+    public void setAfterDeletedData(OnAfterDeletedDataListener listener)
+    {
+        this.deletedListener = listener;
     }
 }

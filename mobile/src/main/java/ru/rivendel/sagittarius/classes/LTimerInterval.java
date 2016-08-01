@@ -62,7 +62,7 @@ public class LTimerInterval extends ADataEventObject {
                 }
                 c.close();
                 this._id_program = _id_program;
-                if (loadListener!=null) loadListener.onDataLoad();
+                if (loadedListener!=null) loadedListener.onAfterLoaded();
             }
         }
         catch (Exception ex) {
@@ -78,7 +78,7 @@ public class LTimerInterval extends ADataEventObject {
         {
             for (CTimerInterval ti:intervals)
                 ti.saveMe();
-            if (saveListener!=null) saveListener.onDataSave();
+            if (savedListener!=null) savedListener.onAfterSaved();
         }
         catch (Exception ex)
         {
