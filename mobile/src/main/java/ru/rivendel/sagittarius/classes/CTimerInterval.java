@@ -80,7 +80,7 @@ public class CTimerInterval
                             /*groupBy*/null,/*having*/null,/*orderBy*/null);
             if (c!=null)
             {
-                this._id = _id;
+                res = _id;
                 cursorToFields(c);
             }
         }
