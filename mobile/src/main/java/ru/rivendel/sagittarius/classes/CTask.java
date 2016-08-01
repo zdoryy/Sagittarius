@@ -4,7 +4,7 @@ import android.database.Cursor;
 import ru.rivendel.sagittarius.Database;
 
 /**
- * Created by user on 01.08.16.
+ * Created by user on  01.08.16.
  */
 
 public class CTask extends ADataEntity {

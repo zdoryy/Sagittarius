@@ -5,7 +5,7 @@ import ru.rivendel.sagittarius.Database;
 
 
 /**
- * Created by user on 01.08.16.
+ * Created by user on  01.08.16.
  */
 
 public class CRegister extends ADataEntity {
