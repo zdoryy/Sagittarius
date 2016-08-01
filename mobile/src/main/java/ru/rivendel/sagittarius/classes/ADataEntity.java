@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 
+import ru.rivendel.sagittarius.Database;
 import ru.rivendel.sagittarius.Environment;
 
 /**
@@ -42,7 +43,7 @@ public abstract class ADataEntity extends ADataEventObject {
                 res = _id;
                 cursorToFields(c);
                 c.close();
-                if (loadListener!=null) loadListener.onDataLoad();
+                if (onLoadedListener !=null) onLoadedListener.onAfterLoaded();
             }
         }
         catch(SQLException sql_ex)
@@ -65,10 +66,28 @@ public abstract class ADataEntity extends ADataEventObject {
             }
             else
             {  // вставка
+                Database db = Environment.db;
                 retID = (int)Environment.db.getWritableDatabase().insert(tableName, null, cv);
                 _id=retID;
             }
-            if (saveListener!=null) saveListener.onDataSave();
+            if (onSavedListener !=null) onSavedListener.onAfterSaved();
+        }
+        catch(SQLException sql_ex)
+        {
+            retID=-1;
+        }
+        return retID;
+    }
+
+    public int deleteMe(int _id)
+    {
+        int retID=-1;
+        try{
+            if (_id>0) {
+                retID = Environment.db.getWritableDatabase().delete(tableName, "_id = ?",
+                        new String[] { String.valueOf(_id) });
+                if (onDeletedListener != null) onDeletedListener.onAfterDeleted();
+            }
         }
         catch(SQLException sql_ex)
         {
