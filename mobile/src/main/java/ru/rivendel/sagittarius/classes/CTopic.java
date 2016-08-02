@@ -16,7 +16,14 @@ public class CTopic extends ADataEntity {
     {
         super(Database.tableTopic);
         _id = 0;
-        title = "Topic";
+        title = "";
+        order = 0;
+    }
+    public CTopic(String name)
+    {
+        super(Database.tableTopic);
+        _id = 0;
+        title = name;
         order = 0;
     }
 

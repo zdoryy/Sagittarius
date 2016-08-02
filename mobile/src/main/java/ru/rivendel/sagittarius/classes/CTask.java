@@ -22,11 +22,19 @@ public class CTask extends ADataEntity {
     {
         super(Database.tableTask);
         _id = 0;
-        title = "Task";
+        title = "";
         order = 0;
     }
 
-    CTask(int _id)
+    public CTask(String name)
+    {
+        super(Database.tableTask);
+        _id = 0;
+        title = name;
+        order = 0;
+    }
+
+    public CTask(int _id)
     {
         this();
         loadMe(_id);
