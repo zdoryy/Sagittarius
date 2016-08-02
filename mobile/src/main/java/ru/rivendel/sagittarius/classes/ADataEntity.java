@@ -4,20 +4,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 
-import ru.rivendel.sagittarius.Database;
 import ru.rivendel.sagittarius.Environment;
 
 /**
  * Created by elanse on 01.08.16.
  */
 public abstract class ADataEntity extends ADataEventObject {
-
-
-
     public int _id;
     public String tableName;
     protected ContentValues cv;
-
 
     protected ADataEntity(String tableName)
     {
@@ -27,7 +22,6 @@ public abstract class ADataEntity extends ADataEventObject {
 
     abstract int cursorToFields(Cursor c);
     abstract void setData();
-
 
     public int loadMe(int _id)
     {
@@ -43,6 +37,7 @@ public abstract class ADataEntity extends ADataEventObject {
                 if (c.getCount()>0)
                 {
                     res = _id;
+                    this._id = _id;
                     c.moveToFirst();
                     cursorToFields(c);
                     c.close();

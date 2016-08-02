@@ -41,7 +41,7 @@ public class LTimerInterval extends ADataEventObject {
         {
             Cursor c =
                     Environment.db.getReadableDatabase().query(
-                            tableName, null, "_id_program = ?",
+                            tableName, null, "program = ?",
                             new String[]{String.valueOf(_id_program)},
                             null, null, null
                     );
@@ -52,7 +52,7 @@ public class LTimerInterval extends ADataEventObject {
                         ti._id = c.getInt(c.getColumnIndex("_id"));
                         ti._id_program = c.getInt(c.getColumnIndex(Database.tableTimerIntervalIDProgram));
                         ti.title = c.getString(c.getColumnIndex(Database.tableTimerIntervalTitle));
-                        ti.order = c.getInt(c.getColumnIndex(Database.tableTimerIntervalOrder));
+                        ti._order = c.getInt(c.getColumnIndex(Database.tableTimerIntervalOrder));
                         ti.time = c.getInt(c.getColumnIndex(Database.tableTimerIntervalTime));
                         ti.sound = c.getString(c.getColumnIndex(Database.tableTimerIntervalSound));
                         ti.waking = c.getInt(c.getColumnIndex(Database.tableTimerIntervalWaking));
