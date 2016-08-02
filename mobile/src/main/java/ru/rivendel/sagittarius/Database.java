@@ -32,12 +32,12 @@ public class Database extends SQLiteOpenHelper {
     public static final String tableTaskAlarm = "alarm";                 // режим уведомления
     public static final String tableTaskTime = "time";                   // конкретное время в сек
 
-    static final String tableTimerProgramTitle = "title";                  // название программы
-    static final String tableTimerProgramOrder = "_order";                 // сортировка
-    static final String tableTimerProgramIDTask = "task";                  // внешний ключ к Task
-    static final String tableTimerProgramWakingSound = "waking_sound";     // имя ресурса
-    static final String tableTimerProgramAdvanceSound = "advance_sound";   // имя ресурса
-    static final String tableTimerProgramFinishSound = "finish_sound";     // имя ресурса
+    public static final String tableTimerProgramTitle = "title";                  // название программы
+    public static final String tableTimerProgramOrder = "_order";                 // сортировка
+    public static final String tableTimerProgramIDTask = "task";                  // внешний ключ к Task
+    public static final String tableTimerProgramWakingSound = "waking_sound";     // имя ресурса
+    public static final String tableTimerProgramAdvanceSound = "advance_sound";   // имя ресурса
+    public static final String tableTimerProgramFinishSound = "finish_sound";     // имя ресурса
 
     public static final String tableTimerIntervalIDProgram = "program"; // внешний ключ к таблице TimerProgram
     public static final String tableTimerIntervalTitle = "title";       // название интервала
