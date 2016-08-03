@@ -14,7 +14,7 @@ public class LTimerProgram extends ADataSetEx<CTimerProgram> {
     }
     public LTimerProgram(int _id_task)
     {
-        super(Database.tableTimerProgram,String.format("task=%1d$", _id_task));
+        super(Database.tableTimerProgram,new String[] {String.format("task=%1d$", _id_task)});
     }
 
     @Override

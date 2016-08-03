@@ -16,7 +16,7 @@ public class LTimerInterval extends ADataSetEx<CTimerInterval> {
     // а этот с отборами
     public LTimerInterval(int _id_program)
     {
-        super(Database.tableTimerInterval,String.format("program=%1d$",_id_program));
+        super(Database.tableTimerInterval,new String[] {String.format("program=%1d$", _id_program)});
 
     }
     public int addTimerInterval(int _id_program,String title,int _order,

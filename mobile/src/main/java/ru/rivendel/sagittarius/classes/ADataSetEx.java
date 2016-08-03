@@ -25,12 +25,11 @@ public abstract class ADataSetEx< AnyType > {
         loadMe(sql,arg);
     }
 
-    public ADataSetEx(String tableName, String where )
+    public ADataSetEx(String tableName, String[] arg )
     {
         super();
         list = new ArrayList();
-        String[] arg = new String[]{};
-        String sql = String.format("SELECT * from %1s$ WHERE %2s$ ORDER BY _order",tableName,where);
+        String sql = String.format("SELECT * from %1s$ ORDER BY _order",tableName);
         loadMe(sql,arg);
     }
 
