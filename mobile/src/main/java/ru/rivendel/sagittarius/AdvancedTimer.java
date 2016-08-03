@@ -56,7 +56,6 @@ public class AdvancedTimer {
                     // звук
                     Log.d("myLogs","l="+String.valueOf(l) +" tick!");
                 }
-
                 @Override
                 public void onFinish() {
                     // звук финиш

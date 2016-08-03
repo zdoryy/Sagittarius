@@ -21,7 +21,7 @@ public abstract class ADataSetEx< AnyType > {
         super();
         list = new ArrayList();
         String[] arg = new String[]{};
-        String sql = String.format("SELECT * from %s ORDER BY _order",tableName);
+        String sql = String.format("SELECT * from %1s$ ORDER BY _order",tableName);
         loadMe(sql,arg);
     }
 
@@ -30,7 +30,7 @@ public abstract class ADataSetEx< AnyType > {
         super();
         list = new ArrayList();
         String[] arg = new String[]{};
-        String sql = String.format("SELECT * from %s WHERE %s ORDER BY _order",tableName,where);
+        String sql = String.format("SELECT * from %1s$ WHERE %2s$ ORDER BY _order",tableName,where);
         loadMe(sql,arg);
     }
 
