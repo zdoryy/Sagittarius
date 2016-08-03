@@ -5,20 +5,38 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.rivendel.sagittarius.Environment;
 
 /**
  * Created by user on 01.08.16.
  */
 
-public abstract class ADataSet {
+public abstract class ADataSet < AnyType > {
+
+    protected List< AnyType > list;
 
     public ADataSet()
     {
+        super();
+        list = new ArrayList();
     }
 
-    abstract ADataEntity[] getList();
-    abstract void addItem(Cursor cursor);
+    public ADataSet(String sql, String[] arg)
+    {
+        this();
+        loadMe(sql,arg);
+    }
+
+    abstract AnyType getNew();
+
+    void addItem(Cursor cursor) {
+        ADataEntity item  = (ADataEntity) getNew();
+        item.cursorToFields(cursor);
+        list.add((AnyType) item);
+    }
 
     // выбирает список из БД по SQL запросу
     public int loadMe(String sql,String[] arg)
@@ -50,15 +68,17 @@ public abstract class ADataSet {
     public int saveMe()
     {
 
-        ADataEntity[] list = getList();
-
+        ADataEntity[] list =(ADataEntity[]) getList().toArray();
         for (ADataEntity item: list)
         {
             if (item.saveMe() == -1) return -1;
         }
-
         return 1;
+    }
 
+    public List<AnyType> getList()
+    {
+        return list;
     }
 
 }
