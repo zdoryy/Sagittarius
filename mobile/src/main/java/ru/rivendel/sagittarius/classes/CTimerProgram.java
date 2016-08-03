@@ -9,8 +9,6 @@ import ru.rivendel.sagittarius.Database;
  */
 public class CTimerProgram extends ADataEntity{
 
-
-    int _id;
     int _id_task;
     String title;
     int _order;

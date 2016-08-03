@@ -1,89 +1,48 @@
 package ru.rivendel.sagittarius.classes;
-
-import android.content.ContentValues;
 import android.database.Cursor;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import ru.rivendel.sagittarius.Database;
-import ru.rivendel.sagittarius.Environment;
 
 /**
  * Created by elanse on 31.07.16.
  */
-public class LTimerInterval extends ADataEventObject {
+public class LTimerInterval extends ADataSetEx<CTimerInterval> {
 
-    public int _id_program;
 
-    public static String tableName = Database.tableTimerInterval;
-
-    private List<CTimerInterval> intervals;
-    private ContentValues cv;
-
+    // этот конструктор загружает из БД весь список без отборов
     public LTimerInterval()
     {
-        intervals = new ArrayList();
-        cv = new ContentValues();
+        super(Database.tableTimerInterval);
     }
+    // а этот с отборами
     public LTimerInterval(int _id_program)
     {
-        this();
-        loadMe(_id_program);
+        super(Database.tableTimerInterval,String.format("program=%d",_id_program));
+
     }
-    public List<CTimerInterval> getCollection()
+    public int addTimerInterval(int _id_program,String title,int _order,
+                                 int time,String sound, int waking, int advance)
     {
-        return intervals;
-    }
-    public int loadMe(int _id_program) {
-        int res = 0;
-        try
-        {
-            Cursor c =
-                    Environment.db.getReadableDatabase().query(
-                            tableName, null, "program = ?",
-                            new String[]{String.valueOf(_id_program)},
-                            null, null, null
-                    );
-            if (c != null) {
-                if (c.moveToFirst()) {
-                    do {
-                        CTimerInterval ti = new CTimerInterval();
-                        ti._id = c.getInt(c.getColumnIndex("_id"));
-                        ti._id_program = c.getInt(c.getColumnIndex(Database.tableTimerIntervalIDProgram));
-                        ti.title = c.getString(c.getColumnIndex(Database.tableTimerIntervalTitle));
-                        ti._order = c.getInt(c.getColumnIndex(Database.tableTimerIntervalOrder));
-                        ti.time = c.getInt(c.getColumnIndex(Database.tableTimerIntervalTime));
-                        ti.sound = c.getString(c.getColumnIndex(Database.tableTimerIntervalSound));
-                        ti.waking = c.getInt(c.getColumnIndex(Database.tableTimerIntervalWaking));
-                        ti.advance = c.getInt(c.getColumnIndex(Database.tableTimerIntervalAdvance));
-                        intervals.add(ti);
-                    } while (c.moveToNext());
-                }
-                c.close();
-                this._id_program = _id_program;
-                if (onLoadedListener !=null) onLoadedListener.onAfterLoaded();
-            }
-        }
-        catch (Exception ex) {
-            res = -1;
-        }
+        int res;
+        CTimerInterval ti = new CTimerInterval();
+        ti._id_program=_id_program;
+        ti.title = title;
+        ti._order = _order;
+        ti.time = time;
+        ti.sound = sound;
+        ti.waking = waking;
+        ti.advance = advance;
+        res = ti.saveMe();
+        if (res>0) list.add(ti);
         return res;
     }
 
-    public int saveMe()
-    {
-        int res=0;
-        try
-        {
-            for (CTimerInterval ti:intervals)
-                ti.saveMe();
-            if (onSavedListener !=null) onSavedListener.onAfterSaved();
-        }
-        catch (Exception ex)
-        {
-            res=-1;
-        }
-        return res;
+    @Override
+    void addItem(Cursor cursor) {
+        CTimerInterval ti = new CTimerInterval();
+        ti.cursorToFields(cursor);
+        list.add(ti);
     }
+
+
+
 }
