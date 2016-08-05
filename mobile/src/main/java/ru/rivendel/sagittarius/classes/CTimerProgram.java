@@ -15,6 +15,7 @@ public class CTimerProgram extends ADataEntity{
     String waking_sound;
     String advance_sound;
     String finish_sound;
+    LTimerInterval ti;
 
     public CTimerProgram()
     {
@@ -25,8 +26,14 @@ public class CTimerProgram extends ADataEntity{
     {
         this();
         loadMe(_id);
+        this._id = _id;
     }
 
+    public LTimerInterval getTimerInterval()
+    {
+        if (ti==null)  ti=new LTimerInterval(_id);
+        return ti;
+    }
 
     @Override
     int cursorToFields(Cursor c) {

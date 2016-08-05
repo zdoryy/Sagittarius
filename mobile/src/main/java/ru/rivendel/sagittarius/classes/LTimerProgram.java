@@ -12,10 +12,10 @@ public class LTimerProgram extends ADataSet<CTimerProgram> {
     {
         super();
     }
-
     public LTimerProgram(int _id_task)
     {
-        super("SELECT "+" * "+" from "+ Database.tableTimerProgram+" WHERE "+ Database.tableTimerProgramIDTask + "=? ORDER BY _order",
+        super("SELECT "+" * "+" from "+ Database.tableTimerProgram+" WHERE "+
+                Database.tableTimerProgramIDTask + "=? ORDER BY _order",
                 new String[] {Integer.toString(_id_task)});
     }
 
@@ -23,6 +23,4 @@ public class LTimerProgram extends ADataSet<CTimerProgram> {
     CTimerProgram getNew() {
         return new CTimerProgram();
     }
-
-
 }
