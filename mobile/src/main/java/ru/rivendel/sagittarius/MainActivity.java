@@ -2,11 +2,12 @@ package ru.rivendel.sagittarius;
 
 // ПРИВЕТ АНВАР
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,10 +15,10 @@ import android.view.MenuItem;
 import ru.rivendel.sagittarius.classes.CTimerInterval;
 
 public class MainActivity extends AppCompatActivity {
-
+    MainActivity instance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        instance = this;
         super.onCreate(savedInstanceState);
 
         Environment.db = new Database(this);
@@ -30,10 +31,32 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                AdvancedTimer at = new AdvancedTimer(0,instance);
+                at.addTimerInterval(0,"timer1",1,45,"lalala.mp3",0,15);
+                at.addTimerInterval(0,"timer2",2,90,"lalala.mp3",-3,180);
+                at.addTimerInterval(0,"timer3",1,63,"lalala.mp3",5,7);
+
+                AdvancedTimer.OnTimerQueueListener lst = new AdvancedTimer.OnTimerQueueListener() {
+                    @Override
+                    public void onQueueEnd() {
+                        Log.d("myLogs","********  EVENT TIMER QUEUE END!!!");
+                    }
+                    @Override
+                    public void onTimerBegin(CTimerInterval ti) {
+                        Log.d("myLogs","********  EVENT TIMER BEGIN!!! + Timer title="+ti.title);
+                    }
+                    @Override
+                    public void onTimerEnd(CTimerInterval ti) {
+                        Log.d("myLogs","********  EVENT TIMER  END!!! + Timer title  = "+ti.title );
+                    }
+                };
+                at.setOnQueueEndListener(lst);
+                at.run();
             }
         });
+
 
     }
 
@@ -55,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
