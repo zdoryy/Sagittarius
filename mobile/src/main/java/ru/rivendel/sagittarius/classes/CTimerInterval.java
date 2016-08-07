@@ -19,6 +19,18 @@ public class CTimerInterval extends ADataEntity
     public CTimerInterval()
     {
         super(Database.tableTimerInterval);
+        // создаем интервал по умолчанию
+        title = "Интервал 1";
+        _order = 1;
+        time = 60 * 15;
+    }
+
+    public CTimerInterval(LTimerInterval ti)
+    {
+        this();
+        _order = ti.size() + 1;
+        title = "Интервал " + Integer.toString(_order);
+
     }
 
     public CTimerInterval(int _id)

@@ -2,6 +2,8 @@ package ru.rivendel.sagittarius;
 
 // ПРИВЕТ АНВАР
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,15 +15,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import ru.rivendel.sagittarius.classes.CTimerInterval;
+import ru.rivendel.sagittarius.fragments.CFragment;
+import ru.rivendel.sagittarius.fragments.FTimer;
 
 public class MainActivity extends AppCompatActivity {
+
     MainActivity instance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         instance = this;
         super.onCreate(savedInstanceState);
 
         Environment.db = new Database(this);
+        Settings.init(getPreferences(MODE_PRIVATE));
 
         setContentView(R.layout.main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -33,27 +41,31 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                AdvancedTimer at = new AdvancedTimer(0,instance);
-                at.addTimerInterval(0,"timer1",1,45,"lalala.mp3",0,15);
-                at.addTimerInterval(0,"timer2",2,90,"lalala.mp3",-3,180);
-                at.addTimerInterval(0,"timer3",1,63,"lalala.mp3",5,7);
 
-                AdvancedTimer.OnTimerQueueListener lst = new AdvancedTimer.OnTimerQueueListener() {
-                    @Override
-                    public void onQueueEnd() {
-                        Log.d("myLogs","********  EVENT TIMER QUEUE END!!!");
-                    }
-                    @Override
-                    public void onTimerBegin(CTimerInterval ti) {
-                        Log.d("myLogs","********  EVENT TIMER BEGIN!!! + Timer title="+ti.title);
-                    }
-                    @Override
-                    public void onTimerEnd(CTimerInterval ti) {
-                        Log.d("myLogs","********  EVENT TIMER  END!!! + Timer title  = "+ti.title );
-                    }
-                };
-                at.setOnQueueEndListener(lst);
-                at.run();
+                setContent(new FTimer());
+
+
+//                AdvancedTimer at = new AdvancedTimer(0,instance);
+//                at.addTimerInterval(0,"timer1",1,45,"lalala.mp3",0,15);
+//                at.addTimerInterval(0,"timer2",2,90,"lalala.mp3",-3,180);
+//                at.addTimerInterval(0,"timer3",1,63,"lalala.mp3",5,7);
+//
+//                AdvancedTimer.OnTimerQueueListener lst = new AdvancedTimer.OnTimerQueueListener() {
+//                    @Override
+//                    public void onQueueEnd() {
+//                        Log.d("myLogs","********  EVENT TIMER QUEUE END!!!");
+//                    }
+//                    @Override
+//                    public void onTimerBegin(CTimerInterval ti) {
+//                        Log.d("myLogs","********  EVENT TIMER BEGIN!!! + Timer title="+ti.title);
+//                    }
+//                    @Override
+//                    public void onTimerEnd(CTimerInterval ti) {
+//                        Log.d("myLogs","********  EVENT TIMER  END!!! + Timer title  = "+ti.title );
+//                    }
+//                };
+//                at.setOnQueueEndListener(lst);
+//                at.run();
             }
         });
 
@@ -85,6 +97,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Environment.db.close();
+    }
+
+    private void setContent(CFragment fragment) {
+
+        if (findViewById(R.id.fragment_container) != null) {
+
+            //fragment.setArguments(getIntent().getExtras());
+
+            FragmentTransaction manager = getFragmentManager().beginTransaction();
+
+            //manager.addToBackStack("main");
+
+            manager.replace(R.id.fragment_container,fragment);
+            manager.commit();
+
+        }
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        if (fab != null) {
+            fab.setVisibility(View.INVISIBLE);
+        }
+
     }
 
 }

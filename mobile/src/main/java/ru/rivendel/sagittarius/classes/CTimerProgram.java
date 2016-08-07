@@ -10,23 +10,38 @@ import ru.rivendel.sagittarius.Database;
 public class CTimerProgram extends ADataEntity{
 
     int _id_task;
-    String title;
+    public String title;
     int _order;
     String waking_sound;
     String advance_sound;
     String finish_sound;
-    LTimerInterval ti;
+    public LTimerInterval ti;
 
     public CTimerProgram()
     {
         super(Database.tableTimerProgram);
+        // создаем программу по умолчанию
+        title = "Программа таймера";
+        waking_sound = getDefaultSound("waking");
+        advance_sound = getDefaultSound("advance");
+        finish_sound = getDefaultSound("finish");
+        ti = new LTimerInterval();
     }
 
     public CTimerProgram(int _id)
     {
         this();
-        loadMe(_id);
-        this._id = _id;
+        if (_id != 0) {
+            // загружаем программу из БД
+            loadMe(_id);
+            this._id = _id;
+        }
+    }
+
+   static public String getDefaultSound(String sound) {
+
+        return "wake";
+
     }
 
     public LTimerInterval getTimerInterval()
@@ -65,4 +80,32 @@ public class CTimerProgram extends ADataEntity{
         cv.put(Database.tableTimerProgramAdvanceSound,advance_sound);
         cv.put(Database.tableTimerProgramFinishSound,finish_sound);
     }
+
+    @Override
+    public int loadMe(int _id) {
+
+        if (super.loadMe(_id) > 0) {
+            ti = new LTimerInterval(_id);
+        } else {
+            return -1;
+        }
+
+        return 1;
+
+    }
+
+    @Override
+    public int saveMe() {
+
+        if (super.saveMe() > 0) {
+            for (CTimerInterval item: ti.list) {
+                item._id_program = _id;
+            }
+            return ti.saveMe();
+        } else {
+            return -1;
+        }
+
+   }
+
 }

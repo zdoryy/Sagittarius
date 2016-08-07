@@ -67,10 +67,10 @@ public abstract class ADataSet < AnyType > {
     public int saveMe()
     {
 
-        ADataEntity[] list =(ADataEntity[]) getList().toArray();
-        for (ADataEntity item: list)
+        for (AnyType item: list)
         {
-            if (item.saveMe() == -1) return -1;
+            ADataEntity data = (ADataEntity) item;
+            if (data.saveMe() == -1) return -1;
         }
         return 1;
     }
@@ -78,6 +78,10 @@ public abstract class ADataSet < AnyType > {
     public List<AnyType> getList()
     {
         return list;
+    }
+
+    public int size() {
+        return list.size();
     }
 
 }
