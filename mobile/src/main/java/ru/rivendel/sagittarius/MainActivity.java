@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import ru.rivendel.sagittarius.classes.CTimerInterval;
+import ru.rivendel.sagittarius.classes.LTopic;
 import ru.rivendel.sagittarius.fragments.CFragment;
 import ru.rivendel.sagittarius.fragments.FTimer;
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         Environment.db = new Database(this);
         Settings.init(getPreferences(MODE_PRIVATE));
+        Environment.topicList = new LTopic();
 
         setContentView(R.layout.main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         Environment.db.close();
     }
 
-    private void setContent(CFragment fragment) {
+    public void setContent(CFragment fragment) {
 
         if (findViewById(R.id.fragment_container) != null) {
 

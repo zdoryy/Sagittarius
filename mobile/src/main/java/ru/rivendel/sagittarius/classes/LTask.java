@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.rivendel.sagittarius.Database;
+import ru.rivendel.sagittarius.DateManager;
 
 /**
  * Created by user on 01.08.16.
@@ -20,10 +21,10 @@ public class LTask extends ADataSet <CTask> {
     }
 
     // этот конструктор загружает из БД список c отбором по ключу Topic
-    public LTask(int _topic)
+    public LTask(int topic, DateManager period)
     {
         super("SELECT "+" * "+" from "+ Database.tableTask+" WHERE "+ Database.tableTaskIDTopic + "=? ORDER BY _order",
-                new String[] {Integer.toString(_topic)});
+                new String[] {Integer.toString(topic)});
     }
 
     @Override

@@ -18,6 +18,8 @@ public class CTask extends ADataEntity {
     public int alarm;
     public int time;
 
+    public enum TaskTabsType {Today,Optional,Check};
+
     public CTask()
     {
         super(Database.tableTask);
@@ -38,6 +40,13 @@ public class CTask extends ADataEntity {
     {
         this();
         loadMe(_id);
+    }
+
+    public CTask(int topic, TaskTabsType tab)
+    {
+        this();
+        _id_topic = topic;
+        mode = tab.ordinal();
     }
 
     protected void setData()
