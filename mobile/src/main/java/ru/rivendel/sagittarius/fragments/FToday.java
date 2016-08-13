@@ -35,7 +35,7 @@ import ru.rivendel.sagittarius.dialogs.CTaskDialog;
 public class FToday extends CFragment {
 
     private DateManager datePointer;
-    private CTask.TaskTabsType taskTab = CTask.TaskTabsType.Today;
+    private CTask.TaskModeType taskTab = CTask.TaskModeType.Task;
 
     private TaskTodayAdapter taskTodayAdapter;
     private TaskOptionalAdapter taskOptionalAdapter;
@@ -61,10 +61,18 @@ public class FToday extends CFragment {
             titleView.setText(item.title);
 
             Button openTaskButton = (Button) view.findViewById(R.id.open_task_button);
+
             openTaskButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //timerProgram.deleteInterval(item);
+                    CTaskDialog dialog = new CTaskDialog();
+                    dialog.setParam(item,new CTaskDialog.OnSaveListener() {
+                        @Override
+                        public void onSave() {
+                            //updateView(finalView);
+                        }
+                    });
+                    dialog.show(getFragmentManager(),"EditTask");
                 }
             });
 
@@ -258,7 +266,7 @@ public class FToday extends CFragment {
         tab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taskTab = CTask.TaskTabsType.Today;
+                taskTab = CTask.TaskModeType.Task;
                 tab1.setBackgroundColor(Color.WHITE);
                 tab2.setBackgroundColor(Color.LTGRAY);
                 tab3.setBackgroundColor(Color.LTGRAY);
@@ -269,7 +277,7 @@ public class FToday extends CFragment {
         tab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taskTab = CTask.TaskTabsType.Optional;
+                taskTab = CTask.TaskModeType.Reminder;
                 tab1.setBackgroundColor(Color.LTGRAY);
                 tab2.setBackgroundColor(Color.WHITE);
                 tab3.setBackgroundColor(Color.LTGRAY);
@@ -280,7 +288,7 @@ public class FToday extends CFragment {
         tab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taskTab = CTask.TaskTabsType.Check;
+                taskTab = CTask.TaskModeType.Check;
                 tab1.setBackgroundColor(Color.LTGRAY);
                 tab2.setBackgroundColor(Color.LTGRAY);
                 tab3.setBackgroundColor(Color.WHITE);
@@ -312,11 +320,11 @@ public class FToday extends CFragment {
         ListView taskList = (ListView) view.findViewById(R.id.task_list);
 
         switch (taskTab) {
-            case Today: {
+            case Task: {
                 taskTodayAdapter.updateList(Environment.topicList.topic,datePointer);
                 taskList.setAdapter(taskTodayAdapter);
             } break;
-            case Optional: {
+            case Reminder: {
                 taskOptionalAdapter.updateList(Environment.topicList.topic,datePointer);
                 taskList.setAdapter(taskOptionalAdapter);
             } break;
@@ -331,7 +339,7 @@ public class FToday extends CFragment {
     public void addTodayTask(final View view) {
 
         CTaskDialog dialog = new CTaskDialog();
-        dialog.setParam(new CTask(Environment.topicList.topic._id,taskTab),new CTaskDialog.OnSaveListener() {
+        dialog.setParam(new CTask(Environment.topicList.topic._id,taskTab,CTask.TaskPeriodType.Daily),new CTaskDialog.OnSaveListener() {
             @Override
             public void onSave() {
                 updateView(view);

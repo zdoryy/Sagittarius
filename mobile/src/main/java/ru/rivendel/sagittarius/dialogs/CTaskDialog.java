@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import ru.rivendel.sagittarius.R;
 import ru.rivendel.sagittarius.classes.CTask;
@@ -44,12 +46,42 @@ public class CTaskDialog extends DialogFragment {
             final EditText titleText = (EditText) view.findViewById(R.id.title_text);
             titleText.setText(task.title);
 
+            final EditText countText = (EditText) view.findViewById(R.id.count_text);
+            countText.setText(Integer.toString(task.count));
+
+            final RadioGroup periodRadio = (RadioGroup) view.findViewById(R.id.period_radio_group);
+            switch (task.period) {
+                case Single: periodRadio.check(R.id.period_button_1); break;
+                case Daily: periodRadio.check(R.id.period_button_2); break;
+                case Weekly: periodRadio.check(R.id.period_button_3); break;
+                case Monthly: periodRadio.check(R.id.period_button_4); break;
+            }
+
+            final RadioGroup modeRadio = (RadioGroup) view.findViewById(R.id.mode_radio_group);
+            switch (task.mode) {
+                case Task: modeRadio.check(R.id.mode_button_1); break;
+                case Reminder: modeRadio.check(R.id.mode_button_2); break;
+                case Check: modeRadio.check(R.id.mode_button_3); break;
+            }
+
             builder.setView(view)
                     .setTitle("Задание")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             task.title = titleText.getText().toString();
+                            task.count = Integer.parseInt(countText.getText().toString());
+                            switch (periodRadio.getCheckedRadioButtonId()) {
+                                case R.id.period_button_1: task.period = CTask.TaskPeriodType.Single; break;
+                                case R.id.period_button_2: task.period = CTask.TaskPeriodType.Daily; break;
+                                case R.id.period_button_3: task.period = CTask.TaskPeriodType.Weekly; break;
+                                case R.id.period_button_4: task.period = CTask.TaskPeriodType.Monthly; break;
+                            }
+                            switch (modeRadio.getCheckedRadioButtonId()) {
+                                case R.id.mode_button_1: task.mode = CTask.TaskModeType.Task; break;
+                                case R.id.mode_button_2: task.mode = CTask.TaskModeType.Reminder; break;
+                                case R.id.mode_button_3: task.mode = CTask.TaskModeType.Check; break;
+                            }
                             task.saveMe();
                             listener.onSave();
                         }
