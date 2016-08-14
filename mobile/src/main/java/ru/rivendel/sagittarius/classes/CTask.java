@@ -13,12 +13,13 @@ public class CTask extends ADataEntity {
     public String title;
     public int order;
     public int count;
-    public int period;
-    public int mode;
+    public TaskPeriodType period;
+    public TaskModeType mode;
     public int alarm;
     public int time;
 
-    public enum TaskTabsType {Today,Optional,Check};
+    public enum TaskPeriodType {Single,Daily,Weekly,Monthly};
+    public enum TaskModeType {Task,Reminder,Check};
 
     public CTask()
     {
@@ -26,6 +27,8 @@ public class CTask extends ADataEntity {
         _id = 0;
         title = "";
         order = 0;
+        period = TaskPeriodType.Daily;
+        mode = TaskModeType.Task;
     }
 
     public CTask(String name)
@@ -34,6 +37,8 @@ public class CTask extends ADataEntity {
         _id = 0;
         title = name;
         order = 0;
+        period = TaskPeriodType.Daily;
+        mode = TaskModeType.Task;
     }
 
     public CTask(int _id)
@@ -42,11 +47,13 @@ public class CTask extends ADataEntity {
         loadMe(_id);
     }
 
-    public CTask(int topic, TaskTabsType tab)
+    public CTask(int topic, TaskModeType _mode, TaskPeriodType _period)
     {
         this();
         _id_topic = topic;
-        mode = tab.ordinal();
+        period = _period;
+        mode = _mode;
+        count = 1;
     }
 
     protected void setData()
@@ -56,8 +63,8 @@ public class CTask extends ADataEntity {
         cv.put(Database.tableTaskTitle,title);
         cv.put(Database.tableTaskOrder,order);
         cv.put(Database.tableTaskCount,count);
-        cv.put(Database.tableTaskPeriod,period);
-        cv.put(Database.tableTaskMode,mode);
+        cv.put(Database.tableTaskPeriod,period.ordinal());
+        cv.put(Database.tableTaskMode,mode.ordinal());
         cv.put(Database.tableTaskAlarm,alarm);
         cv.put(Database.tableTaskTime,time);
     }
@@ -72,8 +79,8 @@ public class CTask extends ADataEntity {
             title = c.getString(c.getColumnIndex(Database.tableTaskTitle));
             order = c.getInt(c.getColumnIndex(Database.tableTaskOrder));
             count = c.getInt(c.getColumnIndex(Database.tableTaskCount));
-            period = c.getInt(c.getColumnIndex(Database.tableTaskPeriod));
-            mode = c.getInt(c.getColumnIndex(Database.tableTaskMode));
+            period = TaskPeriodType.values()[c.getInt(c.getColumnIndex(Database.tableTaskPeriod))];
+            mode = TaskModeType.values()[c.getInt(c.getColumnIndex(Database.tableTaskMode))];
             alarm = c.getInt(c.getColumnIndex(Database.tableTaskAlarm));
             time = c.getInt(c.getColumnIndex(Database.tableTaskTime));
         }
