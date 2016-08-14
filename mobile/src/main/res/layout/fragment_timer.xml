@@ -57,5 +57,14 @@
         android:layout_alignTop="@+id/start_timer_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_interval_button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:src="@android:drawable/ic_input_add"
+        android:layout_alignTop="@+id/add_interval_button"
+        android:layout_toLeftOf="@+id/add_interval_button"
+        android:layout_toStartOf="@+id/add_interval_button" />
 
 </RelativeLayout>

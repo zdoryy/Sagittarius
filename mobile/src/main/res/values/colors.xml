@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#FF4081</color>
     <color name="backColor">#CCCCCC</color>
+    <color name="color_advance_interval">#b2c1e3</color>
+    <color name="color_background_timer_interval">#d8d6d6</color>
 </resources>

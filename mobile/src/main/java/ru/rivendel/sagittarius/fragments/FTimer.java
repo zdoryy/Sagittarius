@@ -1,7 +1,10 @@
 package ru.rivendel.sagittarius.fragments;
 
+import android.app.Activity;
 import android.app.LauncherActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import ru.rivendel.sagittarius.R;
 import ru.rivendel.sagittarius.Settings;
 import ru.rivendel.sagittarius.classes.CTimerInterval;
 import ru.rivendel.sagittarius.classes.CTimerProgram;
+import ru.rivendel.sagittarius.dialogs.CTimerIntervalDialog;
 
 /**
  * Created by user on 06.08.16.
@@ -26,7 +30,7 @@ public class FTimer extends CFragment {
 
     private CTimerProgram timerProgram;
     private AdvancedTimer timerManager;
-
+    private CTimerIntervalDialog dialog;
     // адаптер для списка интервалов
     class IntervalListAdapter extends BaseAdapter {
 
@@ -38,6 +42,7 @@ public class FTimer extends CFragment {
         }
 
          public View getView(int position, View view, ViewGroup parent) {
+
 
              final CTimerInterval item = getItem(position);
              view = mInflater.inflate(R.layout.item_timer, parent, false);
@@ -169,15 +174,29 @@ public class FTimer extends CFragment {
             }
         });
 
-        return view;
+        dialog  = new CTimerIntervalDialog();
 
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.add_interval_button1);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.show(getFragmentManager(),"PickerDialog");
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+        }
     }
 
 
     public void startTimer() {
-
         // запускаем менеджер таймера
-
     }
 
     public void saveTimer() {
