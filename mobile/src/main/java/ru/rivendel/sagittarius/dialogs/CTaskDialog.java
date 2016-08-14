@@ -1,8 +1,10 @@
 package ru.rivendel.sagittarius.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,28 +13,40 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import ru.rivendel.sagittarius.Environment;
 import ru.rivendel.sagittarius.R;
 import ru.rivendel.sagittarius.classes.CTask;
 
 /**
  * Created by user on 12.08.16.
  */
+
 public class CTaskDialog extends DialogFragment {
 
     private CTask task;
-    private OnSaveListener listener;
+    private OnSaveListener mListener;
 
         public interface OnSaveListener {
-            void onSave();
+            void onTaskSave();
         }
 
         public CTaskDialog() {
             super();
         }
 
-        public void setParam(CTask _task, OnSaveListener lst) {
-            task = _task;
-            listener = lst;
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            Bundle param = getArguments();
+            int _id_task = param.getInt("_id_task",0);
+            if (_id_task == 0) {
+                CTask.TaskModeType mode = CTask.TaskModeType.values()[param.getInt("task_mode",0)];
+                task = new CTask(Environment.topicList.topic._id,mode,CTask.TaskPeriodType.Daily);
+            } else {
+                task = new CTask(_id_task);
+            }
+            int owner = param.getInt("listener");
+            mListener = (OnSaveListener) getFragmentManager().findFragmentById(owner);
         }
 
         @Override
@@ -83,15 +97,15 @@ public class CTaskDialog extends DialogFragment {
                                 case R.id.mode_button_3: task.mode = CTask.TaskModeType.Check; break;
                             }
                             task.saveMe();
-                            listener.onSave();
+                            mListener.onTaskSave();
                         }
                     })
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            //CStringDialog.this.getDialog().cancel();
                         }
                     });
             return builder.create();
 
         }
+
     }

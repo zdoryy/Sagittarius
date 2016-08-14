@@ -32,7 +32,7 @@ import ru.rivendel.sagittarius.dialogs.CTaskDialog;
  * Created by user on 08.08.16.
  */
 
-public class FToday extends CFragment {
+public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
 
     private DateManager datePointer;
     private CTask.TaskModeType taskTab = CTask.TaskModeType.Task;
@@ -40,6 +40,28 @@ public class FToday extends CFragment {
     private TaskTodayAdapter taskTodayAdapter;
     private TaskOptionalAdapter taskOptionalAdapter;
     private TaskCheckAdapter taskCheckAdapter;
+
+    @Override
+    public void onTaskSave() {
+        switch (taskTab) {
+            case Task: {
+                taskTodayAdapter.updateList(Environment.topicList.topic,datePointer);
+                taskTodayAdapter.notifyDataSetChanged();
+            } break;
+            case Reminder: {
+                taskOptionalAdapter.updateList(Environment.topicList.topic,datePointer);
+                taskOptionalAdapter.notifyDataSetChanged();
+            } break;
+            case Check: {
+                taskCheckAdapter.updateList(Environment.topicList.topic,datePointer);
+                taskCheckAdapter.notifyDataSetChanged();
+            } break;
+        }
+    }
+
+    int getFragmentID() {
+        return getId();
+    }
 
     // адаптер для списка задач на сегодня
     class TaskTodayAdapter extends ATaskListAdapter {
@@ -66,12 +88,10 @@ public class FToday extends CFragment {
                 @Override
                 public void onClick(View v) {
                     CTaskDialog dialog = new CTaskDialog();
-                    dialog.setParam(item,new CTaskDialog.OnSaveListener() {
-                        @Override
-                        public void onSave() {
-                            //updateView(finalView);
-                        }
-                    });
+                    Bundle param = new Bundle();
+                    param.putInt("_id_task",item._id);
+                    param.putInt("listener",getFragmentID());
+                    dialog.setArguments(param);
                     dialog.show(getFragmentManager(),"EditTask");
                 }
             });
@@ -339,12 +359,10 @@ public class FToday extends CFragment {
     public void addTodayTask(final View view) {
 
         CTaskDialog dialog = new CTaskDialog();
-        dialog.setParam(new CTask(Environment.topicList.topic._id,taskTab,CTask.TaskPeriodType.Daily),new CTaskDialog.OnSaveListener() {
-            @Override
-            public void onSave() {
-                updateView(view);
-            }
-        });
+        Bundle param = new Bundle();
+        param.putInt("task_mode",taskTab.ordinal());
+        param.putInt("listener",getFragmentID());
+        dialog.setArguments(param);
         dialog.show(getFragmentManager(),"AddTask");
 
     }

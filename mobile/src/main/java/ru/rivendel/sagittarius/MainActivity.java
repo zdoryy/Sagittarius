@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +69,7 @@ public class MainActivity extends AppCompatActivity {
 //                at.run();
             }
         });
-
-
+//        }
     }
 
     @Override
@@ -109,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
             FragmentTransaction manager = getFragmentManager().beginTransaction();
 
-            //manager.addToBackStack("main");
+            manager.addToBackStack("main");
 
             manager.replace(R.id.fragment_container,fragment);
             manager.commit();

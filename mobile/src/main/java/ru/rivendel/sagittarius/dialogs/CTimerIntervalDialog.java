@@ -32,6 +32,10 @@ public class CTimerIntervalDialog extends DialogFragment implements View.OnClick
     private static final int REQUEST_NUMBER = 1;
     private static final int REQUEST_3_NUMBER = 2;
 
+    public CTimerIntervalDialog() {
+        super();
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.timer_interval, container, false);

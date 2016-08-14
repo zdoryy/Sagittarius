@@ -126,9 +126,8 @@ public class FTimer extends CFragment {
 
     // создает новую программу по умолчанию с одним интервалом
     public FTimer() {
-
+        super();
         timerProgram = new CTimerProgram(Settings.timerProgramID);
-
     }
 
     @Override
