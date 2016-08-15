@@ -20,11 +20,18 @@ public class LTask extends ADataSet <CTask> {
         super();
     }
 
-    // этот конструктор загружает из БД список c отбором по ключу Topic
+    // этот конструктор загружает из БД список c отбором по ключу Topic и Период
     public LTask(int topic, DateManager period)
     {
         super("SELECT "+" * "+" from "+ Database.tableTask+" WHERE "+ Database.tableTaskIDTopic + "=? ORDER BY _order",
                 new String[] {Integer.toString(topic)});
+    }
+
+    // этот конструктор загружает из БД список c отбором по ключу Topic и Тип период
+    public LTask(int topic, CTask.TaskPeriodType period)
+    {
+        super("SELECT "+" * "+" from "+ Database.tableTask+" WHERE "+ Database.tableTaskIDTopic + "=? AND "+Database.tableTaskPeriod+"=? ORDER BY _order",
+                new String[] {Integer.toString(topic),Integer.toString(period.ordinal())});
     }
 
     @Override

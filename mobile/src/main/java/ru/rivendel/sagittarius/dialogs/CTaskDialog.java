@@ -34,14 +34,46 @@ public class CTaskDialog extends DialogFragment {
             super();
         }
 
+        public static CTaskDialog newInstance(int _id, int lst) {
+            CTaskDialog fragment = new CTaskDialog();
+            Bundle args = new Bundle();
+            args.putInt("_id_task", _id);
+            args.putInt("listener", lst);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        public static CTaskDialog newInstance(CTask.TaskModeType mode, int lst) {
+            CTaskDialog fragment = new CTaskDialog();
+            Bundle args = new Bundle();
+            args.putInt("task_mode",mode.ordinal());
+            args.putInt("listener", lst);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        public static CTaskDialog newInstance(CTask.TaskPeriodType period, int lst) {
+            CTaskDialog fragment = new CTaskDialog();
+            Bundle args = new Bundle();
+            args.putInt("task_period",period.ordinal());
+            args.putInt("listener", lst);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             Bundle param = getArguments();
             int _id_task = param.getInt("_id_task",0);
             if (_id_task == 0) {
-                CTask.TaskModeType mode = CTask.TaskModeType.values()[param.getInt("task_mode",0)];
-                task = new CTask(Environment.topicList.topic._id,mode,CTask.TaskPeriodType.Daily);
+                if (param.getInt("task_mode",-1) != -1) {
+                    CTask.TaskModeType mode = CTask.TaskModeType.values()[param.getInt("task_mode", 0)];
+                    task = new CTask(Environment.topicList.topic._id, mode, CTask.TaskPeriodType.Daily);
+                } else {
+                    CTask.TaskPeriodType period = CTask.TaskPeriodType.values()[param.getInt("task_period", 0)];
+                    task = new CTask(Environment.topicList.topic._id, CTask.TaskModeType.Task, period);
+                }
             } else {
                 task = new CTask(_id_task);
             }

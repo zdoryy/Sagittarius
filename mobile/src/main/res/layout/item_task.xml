@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:gravity="center_vertical"
+    android:paddingTop="3sp"
+    android:paddingBottom="3sp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,17 +46,17 @@
         android:layout_alignBottom="@+id/task_title"
         android:layout_toLeftOf="@+id/checkBox"
         android:layout_toStartOf="@+id/checkBox"
-        android:background="@color/abc_search_url_text_normal"
         android:clickable="true"
         android:textSize="25dp"
         android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp" />
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/list_back" />
 
     <ImageButton
-        android:layout_width="wrap_content"
+        android:layout_width="32sp"
         android:layout_height="wrap_content"
         android:id="@+id/timer_button"
-        android:background="@color/abc_search_url_text_normal"
+        android:background="@drawable/list_back"
         android:src="@android:drawable/presence_away"
         android:layout_alignParentTop="true"
         android:layout_above="@+id/task_comment"

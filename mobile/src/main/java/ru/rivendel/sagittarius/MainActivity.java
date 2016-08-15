@@ -36,14 +36,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
 
-                setContent(new FTimer());
+//                setContent(new FTimer());
 
 
 //                AdvancedTimer at = new AdvancedTimer(0,instance);
@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
 //                };
 //                at.setOnQueueEndListener(lst);
 //                at.run();
-            }
-        });
+//            }
+//        });
 //        }
     }
 
@@ -114,12 +114,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-        if (fab != null) {
-            fab.setVisibility(View.INVISIBLE);
-        }
-
-    }
+      }
 
 }

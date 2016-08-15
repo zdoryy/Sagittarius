@@ -3,6 +3,7 @@ package ru.rivendel.sagittarius.fragments;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,10 +60,6 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
         }
     }
 
-    int getFragmentID() {
-        return getId();
-    }
-
     // адаптер для списка задач на сегодня
     class TaskTodayAdapter extends ATaskListAdapter {
 
@@ -87,11 +84,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
             openTaskButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CTaskDialog dialog = new CTaskDialog();
-                    Bundle param = new Bundle();
-                    param.putInt("_id_task",item._id);
-                    param.putInt("listener",getFragmentID());
-                    dialog.setArguments(param);
+                    CTaskDialog dialog = CTaskDialog.newInstance(item._id,getFragmentID());
                     dialog.show(getFragmentManager(),"EditTask");
                 }
             });
@@ -279,17 +272,10 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
         final Button tab2 = (Button) view.findViewById(R.id.tab2);
         final Button tab3 = (Button) view.findViewById(R.id.tab3);
 
-        tab1.setBackgroundColor(Color.WHITE);
-        tab2.setBackgroundColor(Color.LTGRAY);
-        tab3.setBackgroundColor(Color.LTGRAY);
-
         tab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 taskTab = CTask.TaskModeType.Task;
-                tab1.setBackgroundColor(Color.WHITE);
-                tab2.setBackgroundColor(Color.LTGRAY);
-                tab3.setBackgroundColor(Color.LTGRAY);
                 updateView(view);
             }
         });
@@ -298,9 +284,6 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
             @Override
             public void onClick(View v) {
                 taskTab = CTask.TaskModeType.Reminder;
-                tab1.setBackgroundColor(Color.LTGRAY);
-                tab2.setBackgroundColor(Color.WHITE);
-                tab3.setBackgroundColor(Color.LTGRAY);
                 updateView(view);
             }
         });
@@ -309,9 +292,6 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
             @Override
             public void onClick(View v) {
                 taskTab = CTask.TaskModeType.Check;
-                tab1.setBackgroundColor(Color.LTGRAY);
-                tab2.setBackgroundColor(Color.LTGRAY);
-                tab3.setBackgroundColor(Color.WHITE);
                 updateView(view);
             }
         });
@@ -321,6 +301,23 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
             @Override
             public void onClick(View v) {
                 addTodayTask(view);
+            }
+        });
+
+        Button taskManagerButton = (Button) view.findViewById(R.id.open_taskmanager_button);
+        taskManagerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openTaskManager();
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.start_timer_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity context = (MainActivity) getActivity();
+                context.setContent(new FTimer());
             }
         });
 
@@ -338,6 +335,19 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
         topicText.setText(Environment.topicList.topic.title);
 
         ListView taskList = (ListView) view.findViewById(R.id.task_list);
+
+        Button tab1 = (Button) view.findViewById(R.id.tab1);
+        tab1.setSelected(false);
+        Button tab2 = (Button) view.findViewById(R.id.tab2);
+        tab2.setSelected(false);
+        Button tab3 = (Button) view.findViewById(R.id.tab3);
+        tab3.setSelected(false);
+
+        switch (taskTab) {
+            case Task: tab1.setSelected(true); break;
+            case Reminder: tab2.setSelected(true); break;
+            case Check: tab3.setSelected(true); break;
+        }
 
         switch (taskTab) {
             case Task: {
@@ -357,17 +367,16 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
     }
 
     public void addTodayTask(final View view) {
-
-        CTaskDialog dialog = new CTaskDialog();
-        Bundle param = new Bundle();
-        param.putInt("task_mode",taskTab.ordinal());
-        param.putInt("listener",getFragmentID());
-        dialog.setArguments(param);
+        CTaskDialog dialog = CTaskDialog.newInstance(taskTab,getFragmentID());
         dialog.show(getFragmentManager(),"AddTask");
-
     }
 
-     public void selectTopic() {
+    public void openTaskManager() {
+        MainActivity context = (MainActivity) getActivity();
+        context.setContent(new FTaskManager());
+    }
+
+    public void selectTopic() {
 
 //        CListDialog dialog = new CListDialog();
 //        dialog.show(getFragmentManager(),"TestList");
