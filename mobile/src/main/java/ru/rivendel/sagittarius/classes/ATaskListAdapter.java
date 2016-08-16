@@ -19,8 +19,6 @@ public abstract class ATaskListAdapter extends BaseAdapter {
         mInflater = inflater;
     }
 
-    abstract public void updateList(CTopic topic, DateManager period);
-
     public int getCount() {
         return taskList.size();
     }

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="162"
+    android:padding="5sp"
+    android:background="@drawable/manager_back"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="100"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/relativeLayoutUp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/relativeLayout1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5sp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Topic"
+                android:id="@+id/topicText"
+                android:layout_gravity="center"
+                android:textSize="25sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_toRightOf="@+id/topic_left_button"
+                android:layout_toLeftOf="@+id/topic_right_button"
+                android:textAlignment="center" />
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&lt;"
+                android:id="@+id/topic_left_button"
+                style="@style/topic_button"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=">"
+                android:id="@+id/topic_right_button"
+                android:layout_alignParentRight="true"
+                style="@style/topic_button"
+                android:layout_alignTop="@+id/topicText" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/relativeLayout1"
+            android:weightSum="4"
+            android:id="@+id/linearLayout1">
+
+            <Button
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Single"
+                style="@style/tab_bar_button"
+                android:id="@+id/tab1"
+                />
+            <Button
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Daily"
+                style="@style/tab_bar_button"
+                android:id="@+id/tab2"
+                />
+            <Button
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Weekly"
+                style="@style/tab_bar_button"
+                android:id="@+id/tab3"
+                />
+            <Button
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Monthly"
+                style="@style/tab_bar_button"
+                android:id="@+id/tab4"
+                />
+
+        </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/task_list"
+            android:layout_below="@+id/linearLayout1"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/list_back"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_task_button"
+            android:layout_margin="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:src="@android:drawable/ic_input_add"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="62"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/relativeLayoutDown">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:text="Detail view header"
+            android:id="@+id/detailText"
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAlignment="center"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:weightSum="3"
+            android:id="@+id/linearLayout2">
+
+            <Button
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Report"
+                style="@style/tab_bar_button"
+                android:id="@+id/extab1"
+                />
+            <Button
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Notes"
+                style="@style/tab_bar_button"
+                android:id="@+id/extab2"
+                />
+            <Button
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                style="@style/tab_bar_button"
+                android:id="@+id/extab3"
+                />
+
+        </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/detail_list"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/detailText"
+            android:layout_above="@+id/linearLayout2"
+            android:background="@drawable/list_back"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

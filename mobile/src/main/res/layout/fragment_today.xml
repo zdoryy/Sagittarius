@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5sp">
+    android:padding="5sp"
+    android:background="@drawable/manager_back">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -49,8 +50,7 @@
             android:text="&lt;"
             android:id="@+id/date_left_button"
             android:layout_above="@+id/todayText"
-            android:textSize="22dp"
-            android:background="#FFFFFF" />
+            android:textSize="22dp" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -59,7 +59,6 @@
             android:text=">"
             android:id="@+id/date_right_button"
             android:textSize="22dp"
-            android:background="#FFFFFF"
             android:layout_alignTop="@+id/dateText"
             android:layout_alignRight="@+id/todayText"
             android:layout_alignEnd="@+id/todayText"
@@ -90,23 +89,21 @@
 
 
         <Button
-            style="?android:attr/buttonStyleSmall"
+            style='style="@style/topic_button"'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="&lt;"
             android:id="@+id/topic_left_button"
-            android:textSize="22dp"
-            android:background="#FFFFFF" />
+            android:textSize="22dp" />
 
         <Button
-            style="?android:attr/buttonStyleSmall"
+            style='style="@style/topic_button"'
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=">"
             android:id="@+id/topic_right_button"
             android:layout_alignParentRight="true"
             android:textSize="22dp"
-            android:background="#FFFFFF"
             android:layout_alignTop="@+id/topicText" />
 
     </RelativeLayout>
@@ -157,21 +154,21 @@
                 android:layout_height="wrap_content"
                 android:text="Today"
                 android:id="@+id/tab1"
-                />
+                style="@style/tab_bar_button" />
             <Button
                 android:layout_width="0sp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="More"
+                android:text="Notes"
                 android:id="@+id/tab2"
-                />
+                style="@style/tab_bar_button" />
             <Button
                 android:layout_width="0sp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Report"
                 android:id="@+id/tab3"
-                />
+                style="@style/tab_bar_button" />
 
         </LinearLayout>
 
@@ -202,13 +199,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=">"
-                android:id="@+id/open_tasklist_button"
+                android:id="@+id/open_taskmanager_button"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:background="@color/wallet_hint_foreground_holo_light"
                 android:textColor="@color/abc_secondary_text_material_dark"
                 android:textSize="32dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/start_timer_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@android:drawable/ic_dialog_email" />
+
+
         </RelativeLayout>
 
         <ListView
@@ -218,7 +224,7 @@
             android:layout_below="@+id/linearLayout"
             android:layout_centerHorizontal="true"
             android:layout_above="@+id/relativeLayout4"
-            android:background="@color/abc_search_url_text_normal"
+            android:background="@drawable/list_back"
             />
 
     </RelativeLayout>
