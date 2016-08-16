@@ -101,7 +101,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
                 @Override
                 public void onClick(View v) {
                     MainActivity activity = (MainActivity) getActivity();
-                    activity.setContent(new FTimer());
+                    activity.setContent(new FTimer1());
                 }
             });
 //

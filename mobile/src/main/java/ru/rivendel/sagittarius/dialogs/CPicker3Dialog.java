@@ -29,6 +29,7 @@ public class CPicker3Dialog extends DialogFragment implements View.OnClickListen
     public static final String NUMBER1 = "number3_1";
     public static final String NUMBER2 = "number2_2";
     public static final String NUMBER3 = "number3_3";
+    public CPicker3Dialog(){super();}
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().setTitle("Title!");

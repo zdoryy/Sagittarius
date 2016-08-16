@@ -25,8 +25,8 @@
         android:layout_below="@+id/titleText"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_above="@+id/add_interval_button"
-        android:background="@color/abc_search_url_text_normal" />
+        android:background="@android:color/holo_purple"
+        android:layout_above="@+id/add_interval_button1" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -37,15 +37,16 @@
         android:layout_gravity="right"
         android:layout_alignTop="@+id/start_timer_button"
         android:layout_alignRight="@+id/interval_list"
-        android:layout_alignEnd="@+id/interval_list" />
+        android:layout_alignEnd="@+id/interval_list"
+        android:visibility="invisible" />
 
     <Button
         android:layout_width="128sp"
-        android:layout_height="128sp"
+        android:layout_height="wrap_content"
         android:text="Старт"
         android:id="@+id/start_timer_button"
         android:layout_gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/interval_list"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -54,7 +55,7 @@
         android:layout_height="wrap_content"
         android:text="Save"
         android:id="@+id/save_button"
-        android:layout_alignTop="@+id/start_timer_button"
+        android:layout_below="@+id/interval_list"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
     <android.support.design.widget.FloatingActionButton
@@ -63,8 +64,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:src="@android:drawable/ic_input_add"
-        android:layout_alignTop="@+id/add_interval_button"
-        android:layout_toLeftOf="@+id/add_interval_button"
-        android:layout_toStartOf="@+id/add_interval_button" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/interval_list"
+        android:layout_alignEnd="@+id/interval_list" />
 
 </RelativeLayout>

@@ -2,22 +2,18 @@ package ru.rivendel.sagittarius;
 
 // ПРИВЕТ АНВАР
 
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ru.rivendel.sagittarius.classes.CTimerInterval;
 import ru.rivendel.sagittarius.classes.LTopic;
 import ru.rivendel.sagittarius.fragments.CFragment;
-import ru.rivendel.sagittarius.fragments.FTimer;
+import ru.rivendel.sagittarius.fragments.FTimer1;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         Settings.init(getPreferences(MODE_PRIVATE));
         Environment.topicList = new LTopic();
 
+        //setContentView(R.layout.main);
         setContentView(R.layout.main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -43,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
 
-                setContent(new FTimer());
+                //setContent(new FTimer());
+
 
 
 //                AdvancedTimer at = new AdvancedTimer(0,instance);
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         Environment.db.close();
     }
 
-    public void setContent(CFragment fragment) {
+    public void setContent(FTimer1 fragment) {
 
         if (findViewById(R.id.fragment_container) != null) {
 

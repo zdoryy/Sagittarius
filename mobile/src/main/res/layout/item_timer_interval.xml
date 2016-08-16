@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="1"
+    android:background="@color/color_my_magenta_dark">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_my_magenta_dark">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="INTERVAL"
+            android:id="@+id/tii_title"
+            style="@style/my_LabelStyle.normal"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/holo_orange_light" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/dialog_back"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="0dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00:00"
+                android:id="@+id/tii_timer"
+                style="@style/my_LabelStyle.big"
+                android:layout_gravity="center_horizontal"
+                android:textSize="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold"
+                android:textColor="@color/color_my_magenta_dark" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tii_img_status"
+                android:src="@android:drawable/presence_invisible"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/tii_timer"
+                android:layout_toStartOf="@+id/tii_timer"
+                android:layout_marginRight="30dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/tii_advance">
+
+            <RelativeLayout
+                android:layout_width="196dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imgAdvanced"
+                    android:src="@android:drawable/ic_popup_reminder"
+                    android:layout_margin="5dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="15"
+                    android:id="@+id/tii_advance"
+                    style="@style/my_LabelStyle.big"
+                    android:layout_alignTop="@+id/imgAdvanced"
+                    android:layout_toRightOf="@+id/imgAdvanced"
+                    android:layout_toEndOf="@+id/imgAdvanced"
+                    android:textColor="@color/color_my_magenta_dark" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imgWaking"
+                    android:src="@android:drawable/ic_menu_sort_by_size"
+                    android:layout_alignBottom="@+id/tii_advance"
+                    android:layout_toRightOf="@+id/tii_advance"
+                    android:layout_toEndOf="@+id/tii_advance"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00"
+                    android:id="@+id/tii_waking"
+                    style="@style/my_LabelStyle.big"
+                    android:layout_alignTop="@+id/tii_advance"
+                    android:layout_toRightOf="@+id/imgWaking"
+                    android:layout_toEndOf="@+id/imgWaking"
+                    android:textColor="@color/color_my_magenta_dark" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

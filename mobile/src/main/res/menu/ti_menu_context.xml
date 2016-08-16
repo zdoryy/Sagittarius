@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/mnu_edit_interval"
+        android:title="@string/ti_mnu_edit_interval" />
+    <item android:id="@+id/mnu_delete_interval"
+        android:title="@string/ti_mnu_delete_interval" />
+    <item android:id="@+id/mnu_run_interval"
+        android:title="@string/ti_mnu_run_interval" />
+</menu>

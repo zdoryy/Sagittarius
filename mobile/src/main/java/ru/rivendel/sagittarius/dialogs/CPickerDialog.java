@@ -25,6 +25,7 @@ public class CPickerDialog extends DialogFragment implements View.OnClickListene
     float scaleX=1.8f;
     float scaleY=1.7f;
     public static final String NUMBER = "number";
+    public CPickerDialog() {super();}
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().setTitle("Title!");

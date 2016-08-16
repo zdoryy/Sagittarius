@@ -29,7 +29,7 @@ public class CTimerInterval extends ADataEntity
     {
         this();
         _order = ti.size() + 1;
-        title = "Интервал " + Integer.toString(_order);
+        //title = "Интервал " + Integer.toString(_order);
 
     }
 

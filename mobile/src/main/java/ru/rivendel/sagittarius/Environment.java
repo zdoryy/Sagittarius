@@ -13,6 +13,10 @@ public class Environment {
 
     public static LTopic topicList = null;
 
+    public static final int TI_REQUEST_NUMBER = 1;
+    public static final int TI_REQUEST_3_NUMBER = 2;
+    public static final int TI_REQUEST_INTERVAL = 3;
+
     public static void beep() {
 
 

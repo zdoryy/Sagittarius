@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/grey_gradient"
+    android:background="@drawable/dialog_back"
     android:weightSum="1">
 
     <TableRow
@@ -33,7 +33,7 @@
                     android:layout_marginLeft="10dip"
                     android:layout_marginRight="5dip"
                     android:textColor="#000000"
-                    style="@style/LabelStyle.normal" />
+                    style="@style/my_LabelStyle.normal" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
                     android:layout_marginLeft="10dip"
                     android:layout_marginRight="5dip"
                     android:textColor="#000000"
-                    style="@style/LabelStyle.normal" />
+                    style="@style/my_LabelStyle.normal" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
                     android:layout_marginLeft="10dip"
                     android:layout_marginRight="5dip"
                     android:textColor="#000000"
-                    style="@style/LabelStyle.normal" />
+                    style="@style/my_LabelStyle.normal" />
             </TableRow>
 
             <TableRow
@@ -66,34 +66,38 @@
                 android:layout_gravity="center_horizontal"
                 android:padding="5dip"
                 android:weightSum="1"
-                style="@style/TextViewStyle">
+                style="@style/my_TextViewStyle"
+                android:background="@color/color_my_magenta_dark">
 
                 <TextView
                     android:layout_width="100dip"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:id="@+id/txtHours"
+                    android:id="@+id/ti_txtHours"
                     android:layout_weight="0.33"
                     android:text="00"
-                    style="@style/LabelStyle.big" />
+                    style="@style/my_LabelStyle.big"
+                    android:textColor="@android:color/holo_orange_light" />
 
                 <TextView
                     android:layout_width="100dip"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:id="@+id/txtMinutes"
+                    android:id="@+id/ti_txtMinutes"
                     android:layout_weight="0.33"
                     android:text="15"
-                    style="@style/LabelStyle.big" />
+                    style="@style/my_LabelStyle.big"
+                    android:textColor="@android:color/holo_orange_light" />
 
                 <TextView
                     android:layout_width="100dip"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:id="@+id/txtSeconds"
+                    android:id="@+id/ti_txtSeconds"
                     android:layout_weight="0.33"
                     android:text="00"
-                    style="@style/LabelStyle.big" />
+                    style="@style/my_LabelStyle.big"
+                    android:textColor="@android:color/holo_orange_light" />
             </TableRow>
         </LinearLayout>
     </TableRow>
@@ -114,26 +118,28 @@
             android:layout_weight="0.3"
             android:gravity="center"
             android:textColor="#000000"
-            style="@style/LabelStyle.normal" />
+            style="@style/my_LabelStyle.normal" />
 
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/black_frame"
+        android:layout_margin="5dip">
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtIntervalName"
+            android:id="@+id/ti_txtIntervalName"
             android:layout_weight="1"
             android:text="interval1"
-            android:background="@drawable/black_frame"
-            android:layout_margin="5dip"
+            android:background="@color/color_my_magenta_dark"
             android:maxLines="1"
             android:minLines="1"
-            android:inputType="textShortMessage" />
+            android:inputType="textShortMessage"
+            android:textColor="@android:color/holo_orange_light" />
     </TableRow>
 
     <RelativeLayout
@@ -147,30 +153,32 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cbAdvance"
+            android:id="@+id/ti_cbAdvance"
             android:checked="false"
+            android:buttonTint="@color/color_tint"
             android:text="За сколько секунд оповестить об окончании таймера"
-            android:layout_alignTop="@+id/txtAdvance"
+            android:layout_alignTop="@+id/ti_txtAdvance"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignBottom="@+id/txtAdvance"
-            android:layout_toLeftOf="@+id/txtAdvance"
-            android:layout_toStartOf="@+id/txtAdvance" />
+            android:layout_alignBottom="@+id/ti_txtAdvance"
+            android:layout_toLeftOf="@+id/ti_txtAdvance"
+            android:layout_toStartOf="@+id/ti_txtAdvance" />
 
         <TextView
             android:layout_width="100dip"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/txtAdvance"
+            android:id="@+id/ti_txtAdvance"
             android:text="00"
             android:clickable="true"
-            style="@style/LabelStyle.big"
+            style="@style/my_LabelStyle.big"
             android:layout_gravity="right"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/txt_control" />
+            android:textColor="@android:color/holo_orange_light"
+            android:background="@color/color_my_magenta_dark" />
 
     </RelativeLayout>
 
@@ -204,28 +212,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Четкий ритм - задает определенную в секундах переодичность сигнала"
-                    android:id="@+id/cdRithm"
+                    android:id="@+id/ti_cbRithm"
                     android:checked="false"
                     android:layout_alignParentTop="true"
-                    android:layout_toLeftOf="@+id/txtRithm"
+                    android:buttonTint="@color/color_tint"
+                    android:layout_toLeftOf="@+id/ti_txtRithm"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_alignBottom="@+id/txtRithm" />
+                    android:layout_alignBottom="@+id/ti_txtRithm" />
 
                 <TextView
                     android:layout_width="100dip"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/txtRithm"
+                    android:id="@+id/ti_txtRithm"
                     android:text="00"
                     android:clickable="true"
-                    style="@style/LabelStyle.big"
+                    style="@style/my_LabelStyle.big"
                     android:layout_gravity="center_vertical"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/txt_control" />
+                    android:textColor="@android:color/holo_orange_light"
+                    android:background="@color/color_my_magenta_dark" />
 
             </RelativeLayout>
             <RelativeLayout
@@ -238,11 +248,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Плавающий ритм - количесто напоминаний во время работы таймера (периоды случайные)"
-                    android:id="@+id/cdWaked"
+                    android:id="@+id/ti_cbWaked"
                     android:checked="false"
                     android:layout_weight="0.8"
-                    android:layout_alignTop="@+id/txtWake"
-                    android:layout_toLeftOf="@+id/txtWake"
+                    android:layout_alignTop="@+id/ti_txtWake"
+                    android:layout_toLeftOf="@+id/ti_txtWake"
+                    android:buttonTint="@color/color_tint"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentBottom="true" />
@@ -251,15 +262,16 @@
                     android:layout_width="100dip"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:id="@+id/txtWake"
+                    android:id="@+id/ti_txtWake"
                     android:layout_gravity="center_vertical"
                     android:text="00"
-                    style="@style/LabelStyle.big"
+                    style="@style/my_LabelStyle.big"
                     android:layout_weight="0.2"
-                    android:background="@drawable/txt_control"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:background="@color/color_my_magenta_dark" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -276,18 +288,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Отмена"
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnNO"
             android:layout_weight="0.5"
             android:layout_gravity="bottom"
-            style="@style/Button_other" />
+            style="@style/my_Button_other" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ОК"
-            android:id="@+id/btnOK"
+            android:id="@+id/btnYES"
             android:layout_weight="0.5"
             android:layout_gravity="bottom"
-            style="@style/Button_ok" />
+            style="@style/my_Button_ok" />
 
 
     </TableRow>

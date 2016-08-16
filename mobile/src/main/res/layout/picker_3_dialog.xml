@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/labelDialog3Title"
             android:layout_weight="1"
-            style="@style/LabelStyle.normal"
+            style="@style/my_LabelStyle.normal"
             android:text="Прокрутите до нужного числа" />
     </TableRow>
 
@@ -43,7 +43,7 @@
                 android:layout_marginRight="3dp"
                 android:text="Часы"
                 android:textAlignment="center"
-                style="@style/LabelStyle.normal" />
+                style="@style/my_LabelStyle.normal" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                 android:layout_marginBottom="6dp"
                 android:text="Минуты"
                 android:textAlignment="center"
-                style="@style/LabelStyle.normal" />
+                style="@style/my_LabelStyle.normal" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:layout_marginBottom="6dp"
                 android:text="Секунды"
                 android:textAlignment="center"
-                style="@style/LabelStyle.normal" />
+                style="@style/my_LabelStyle.normal" />
         </TableRow>
 
         <TableRow
@@ -140,7 +140,7 @@
             android:id="@+id/btnNO"
             android:layout_weight="0.5"
 
-            style="@style/Button_other" />
+            style="@style/my_Button_other" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -148,7 +148,7 @@
             android:id="@+id/btnYES"
             android:layout_weight="0.5"
 
-            style="@style/Button_ok" />
+            style="@style/my_Button_ok" />
 
 
     </TableRow>

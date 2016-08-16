@@ -4,7 +4,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="lblHourInterval">Часов</string>
-    <string name="lblMinutesInterval">Минут</string>
-    <string name="lblSecInterval">Секунд</string>
+    <string name="ti_lbl_hour">Часов</string>
+    <string name="ti_lbl_minutes">Минут</string>
+    <string name="ti_lbl_seconds">Секунд</string>
+    <string name="ti_mnu_edit_interval">Изменить</string>
+    <string name="ti_mnu_delete_interval">Удалить</string>
+    <string name="ti_mnu_run_interval">Запустить</string>
 </resources>
