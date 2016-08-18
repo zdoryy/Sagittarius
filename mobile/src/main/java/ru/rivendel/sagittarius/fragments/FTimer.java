@@ -142,17 +142,17 @@ public class FTimer extends CFragment {
         TextView titleView = (TextView) view.findViewById(R.id.titleText);
         titleView.setText(timerProgram.title);
 
-        Button addIntervalButton = (Button) view.findViewById(R.id.add_interval_button);
-
-        addIntervalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // добавляем новый интервал в список
-                timerProgram.ti.getList().add(new CTimerInterval(timerProgram.ti));
-                listView.setAdapter(listAdapter);
-                view.invalidate();
-            }
-        });
+//        Button addIntervalButton = (Button) view.findViewById(R.id.add_interval_button);
+//
+//        addIntervalButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // добавляем новый интервал в список
+//                timerProgram.ti.getList().add(new CTimerInterval(timerProgram.ti));
+//                listView.setAdapter(listAdapter);
+//                view.invalidate();
+//            }
+//        });
 
         Button startTimerButton = (Button) view.findViewById(R.id.start_timer_button);
 

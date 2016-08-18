@@ -30,11 +30,23 @@ public class AdvancedTimer {
     private int advanceSound;
     private final int MAX_STREAMS = 5;
     private MainActivity instance;
+    private boolean runAllIntervals;
+
+
+
 
     public AdvancedTimer(int id_program, MainActivity instance)
     {
         tp = new CTimerProgram(id_program);
         this.id_program = id_program;
+        this.instance = instance;
+        createSoundPool();
+    }
+
+    public AdvancedTimer(CTimerProgram tp, MainActivity instance)
+    {
+        this.tp = tp;
+        this.id_program = tp._id;
         this.instance = instance;
         createSoundPool();
     }
@@ -92,6 +104,8 @@ public class AdvancedTimer {
             t = new CountDownTimer(ti.time*1000,1000) {
                 @Override
                 public void onTick(long lRemaining) {
+                    if (onTimerListener!=null)
+                        onTimerListener.onTimerTick(lRemaining/1000);
                     long passedTime = ti.time*1000 - lRemaining;
                     // звук
                     if (ti.advance>0&&(lRemaining/1000)<=(ti.advance+1))
@@ -123,8 +137,12 @@ public class AdvancedTimer {
                     // звук финиш
                     Log.d("myLogs","FINISH SOUND");
                     if (onTimerListener!=null) onTimerListener.onTimerEnd(ti);
-                    indexTimer+=1;
-                    mainLoop();
+                    if (runAllIntervals)
+                    {
+                        indexTimer+=1;
+                        mainLoop();
+                    } else indexTimer=0;
+
                 }
             }.start();
         }
@@ -137,17 +155,7 @@ public class AdvancedTimer {
 
     private int floatingRateGen(int time /*сек.*/, int waking)
     {
-//        if (waking==0) return 0;
-//        Random r = new Random(System.currentTimeMillis());
-//        // длинна интервала в секундах
         int l = time/Math.abs(waking);
-//        // для расчета отклонения
-//        int n = 8;
-//        // отклонение, для нормального распределения
-//        int dl = l/n;
-//        // генерируем длины промежутков между срабатываниями таймера
-//        int _dl = -dl + r.nextInt(2*dl + 1);
-//        return l+_dl;
         Random r = new Random(System.currentTimeMillis());
         int rnd = l + (int)r.nextGaussian() * l/8;
         return rnd;
@@ -155,7 +163,11 @@ public class AdvancedTimer {
 
     public void stop()
     {
-        if (t!=null) t.cancel();
+
+        if (t!=null) {
+            t.cancel();
+            if (onTimerListener!=null) onTimerListener.onTimerCancelled();
+        }
     }
 
     private long getInteval(int time, int waking)
@@ -192,10 +204,24 @@ public class AdvancedTimer {
         tp.getTimerInterval().getList().add(ti);
     }
 
+    public void setRunIntervalIndex(int _indexTimer)
+    {
+        if (tp==null) return;
+        if (_indexTimer<tp.ti.getList().size()&&_indexTimer>=0)
+            indexTimer = _indexTimer;
+    }
+
+    public void setRunAllInterval(boolean ai)
+    {
+        runAllIntervals = ai;
+    }
+
     public interface OnTimerQueueListener
     {
         void onQueueEnd();
         void onTimerBegin(CTimerInterval ti);
         void onTimerEnd(CTimerInterval ti);
+        void onTimerTick(long lRemaining);
+        void onTimerCancelled();
     }
 }

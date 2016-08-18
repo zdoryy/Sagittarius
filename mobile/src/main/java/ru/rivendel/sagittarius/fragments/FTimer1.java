@@ -2,6 +2,9 @@ package ru.rivendel.sagittarius.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.ContextMenu;
@@ -10,14 +13,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import ru.rivendel.sagittarius.AdvancedTimer;
 import ru.rivendel.sagittarius.Environment;
+import ru.rivendel.sagittarius.MainActivity;
 import ru.rivendel.sagittarius.R;
 import ru.rivendel.sagittarius.Settings;
 import ru.rivendel.sagittarius.classes.CTimerInterval;
@@ -25,16 +29,22 @@ import ru.rivendel.sagittarius.classes.CTimerProgram;
 import ru.rivendel.sagittarius.dialogs.CTimerIntervalDialog;
 
 
-public class FTimer1 extends CFragment {
+public class FTimer1 extends CFragment implements AdvancedTimer.OnTimerQueueListener {
     private CTimerProgram timerProgram;
     private AdvancedTimer timerManager;
     private CTimerIntervalDialog dialog_interval;
     private IntervalListAdapter listAdapter;
     private ListView listView;
     private View view;
+    private MainActivity instance;
     private int curPos=-1;
-    enum FTimerStatus {nop, edit_interval,add_interval};
-    FTimerStatus status=FTimerStatus.nop;
+
+    enum TTimerStatus {nop, edit_interval,add_interval};
+    enum TTimerManagerStatus {tmStop, tmRunning};
+
+    TTimerStatus status=TTimerStatus.nop;
+    TTimerManagerStatus tm_ststus = TTimerManagerStatus.tmStop;
+
     // адаптер для списка интервалов
     class IntervalListAdapter extends BaseAdapter {
 
@@ -103,18 +113,6 @@ public class FTimer1 extends CFragment {
         TextView titleView = (TextView) view.findViewById(R.id.titleText);
         titleView.setText(timerProgram.title);
 
-        Button addIntervalButton = (Button) view.findViewById(R.id.add_interval_button);
-
-        addIntervalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // добавляем новый интервал в список
-                timerProgram.ti.getList().add(new CTimerInterval(timerProgram.ti));
-                listView.setAdapter(listAdapter);
-                view.invalidate();
-            }
-        });
-
         Button startTimerButton = (Button) view.findViewById(R.id.start_timer_button);
 
         startTimerButton.setOnClickListener(new View.OnClickListener() {
@@ -141,11 +139,15 @@ public class FTimer1 extends CFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                status=FTimerStatus.add_interval;
+                status=TTimerStatus.add_interval;
                 dialog_interval.show(getFragmentManager(),"TimerIntervalDialog");
             }
         });
 
+        timerManager = new AdvancedTimer(timerProgram,(MainActivity)getActivity());
+        timerManager.setOnQueueEndListener(this);
+
+        instance = (MainActivity) getActivity();
 
         return view;
     }
@@ -169,9 +171,10 @@ public class FTimer1 extends CFragment {
         switch(item.getItemId())
         {
             case R.id.mnu_run_interval:
+                runTimerInterval();
                 break;
             case R.id.mnu_edit_interval:
-                status = FTimerStatus.edit_interval;
+                status = TTimerStatus.edit_interval;
                 dialog_interval.show(getFragmentManager(),"TimerIntervalDialog");
                 break;
             case R.id.mnu_delete_interval:
@@ -197,6 +200,27 @@ public class FTimer1 extends CFragment {
         }
     }
 
+    private void runTimerInterval()
+    {
+        switch(tm_ststus)
+        {
+            case tmStop:
+                timerManager.setRunAllInterval(false);
+                timerManager.setRunIntervalIndex(curPos);
+                timerManager.run();
+                tm_ststus=TTimerManagerStatus.tmRunning;
+                break;
+            case tmRunning:
+                timerManager.stop();
+                timerManager.setRunAllInterval(false);
+                timerManager.setRunIntervalIndex(curPos);
+                timerManager.run();
+                tm_ststus=TTimerManagerStatus.tmRunning;
+                break;
+        }
+    }
+
+
     private void addOrEditInterval(Intent data)
     {
         switch(status)
@@ -216,11 +240,16 @@ public class FTimer1 extends CFragment {
                         "");
                 break;
         }
-        status = FTimerStatus.nop;
+        status = TTimerStatus.nop;
     }
 
     public void startTimer() {
-        // запускаем менеджер таймера
+        if (tm_ststus==TTimerManagerStatus.tmStop)
+        {
+            curPos=0;
+            timerManager.setRunAllInterval(true);
+            timerManager.run();
+        }
     }
 
     public void saveTimer() {
@@ -261,4 +290,57 @@ public class FTimer1 extends CFragment {
 
         return 0;
     }
+
+    @Override
+    public void onQueueEnd() {
+        listAdapter.notifyDataSetChanged();
+        tm_ststus=TTimerManagerStatus.tmStop;
+    }
+
+    @Override
+    public void onTimerBegin(CTimerInterval ti) {
+
+    }
+
+    @Override
+    public void onTimerEnd(CTimerInterval ti) {
+        listAdapter.notifyDataSetChanged();
+        curPos++;
+    }
+
+    @Override
+    public void onTimerTick(final long lRemaining) {
+        View itemView = listView.getChildAt(curPos);
+        final TextView tvTimer = (TextView) itemView.findViewById(R.id.tii_timer);
+        final TextView tvStatus = (TextView) itemView.findViewById(R.id.tii_status);
+        final LinearLayout layout = (LinearLayout) itemView.findViewById(R.id.tii_layout);
+
+        if (tvTimer!=null)
+        {
+            instance.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvTimer.setText(timeToHHMMSS((int)lRemaining));
+                    Drawable draw =
+                            lRemaining % 2 == 0 ?
+                                    getResources().getDrawable(R.drawable.rect_status_green):
+                                    getResources().getDrawable(R.drawable.rect_status_grey);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        tvStatus.setBackground(draw);
+                        layout.setBackground(getResources().getDrawable(R.drawable.dialog_back_running));
+                    } else {
+                        tvStatus.setBackgroundDrawable(draw);
+                        layout.setBackgroundDrawable(getResources().getDrawable(R.drawable.dialog_back_running));
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onTimerCancelled() {
+        tm_ststus = TTimerManagerStatus.tmStop;
+        listAdapter.notifyDataSetChanged();
+    }
+
 }

@@ -9,5 +9,5 @@
     <string name="ti_lbl_seconds">Секунд</string>
     <string name="ti_mnu_edit_interval">Изменить</string>
     <string name="ti_mnu_delete_interval">Удалить</string>
-    <string name="ti_mnu_run_interval">Запустить</string>
+    <string name="ti_mnu_run_interval">Запустить текущий интервал</string>
 </resources>

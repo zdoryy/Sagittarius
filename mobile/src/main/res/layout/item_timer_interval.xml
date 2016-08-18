@@ -27,7 +27,8 @@
         android:layout_height="match_parent"
         android:background="@drawable/dialog_back"
         android:layout_marginLeft="5dip"
-        android:layout_marginRight="5dip">
+        android:layout_marginRight="5dip"
+        android:id="@+id/tii_layout">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -50,15 +51,16 @@
                 android:textStyle="bold"
                 android:textColor="@color/color_my_magenta_dark" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tii_img_status"
-                android:src="@android:drawable/presence_invisible"
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/tii_status"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/rect_status_grey"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/tii_timer"
                 android:layout_toStartOf="@+id/tii_timer"
-                android:layout_marginRight="30dp" />
+                android:layout_marginRight="20dip" />
 
         </RelativeLayout>
 
