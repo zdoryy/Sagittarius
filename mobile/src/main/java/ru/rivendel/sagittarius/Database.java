@@ -69,7 +69,7 @@ public class Database extends SQLiteOpenHelper {
     public static final String tableNoteIDTopic = "topic";              // внешний ключ к таблице Topic
     public static final String tableNoteIDTask = "task";                // внешний ключ к таблице Task
     public static final String tableNoteIDTerm = "term";                // внешний ключ к таблице Term
-    public static final String tableNoteIDTime = "time";                // время создания в сек с 1970
+    public static final String tableNoteTime = "time";                  // время создания в сек с 1970
 
     public Database(Context context) {
         super(context, dbName, null, 1);
@@ -143,7 +143,7 @@ public class Database extends SQLiteOpenHelper {
                 tableNoteIDTopic + " INTEGER, " +
                 tableNoteIDTask + " INTEGER, " +
                 tableNoteIDTerm + " INTEGER, " +
-                tableNoteIDTime + " INTEGER)");
+                tableNoteTime + " INTEGER)");
 
     }
 

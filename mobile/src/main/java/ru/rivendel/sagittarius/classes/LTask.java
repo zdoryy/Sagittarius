@@ -20,18 +20,20 @@ public class LTask extends ADataSet <CTask> {
         super();
     }
 
-    // этот конструктор загружает из БД список c отбором по ключу Topic и Период
-    public LTask(int topic, DateManager period)
+    // этот конструктор загружает из БД список c отбором по ключам Topic Mode
+    public LTask(int topic, CTask.TaskModeType mode)
     {
-        super("SELECT "+" * "+" from "+ Database.tableTask+" WHERE "+ Database.tableTaskIDTopic + "=? ORDER BY _order",
-                new String[] {Integer.toString(topic)});
+        super("SELECT "+" * "+" from "+ Database.tableTask+" WHERE "+ Database.tableTaskIDTopic +
+                        "=? AND "+Database.tableTaskMode+"=? ORDER BY _order",
+                new String[] {Integer.toString(topic),Integer.toString(mode.ordinal())});
     }
 
-    // этот конструктор загружает из БД список c отбором по ключу Topic и Тип период
-    public LTask(int topic, CTask.TaskPeriodType period)
+    // этот конструктор загружает из БД список c отбором по ключам Topic Mode Period
+    public LTask(int topic, CTask.TaskModeType mode, CTask.TaskPeriodType period)
     {
-        super("SELECT "+" * "+" from "+ Database.tableTask+" WHERE "+ Database.tableTaskIDTopic + "=? AND "+Database.tableTaskPeriod+"=? ORDER BY _order",
-                new String[] {Integer.toString(topic),Integer.toString(period.ordinal())});
+        super("SELECT "+" * "+" from "+ Database.tableTask+" WHERE "+ Database.tableTaskIDTopic +
+                        "=? AND "+Database.tableTaskMode+"=? AND "+Database.tableTaskPeriod+"=? ORDER BY _order",
+                new String[] {Integer.toString(topic),Integer.toString(mode.ordinal()),Integer.toString(period.ordinal())});
     }
 
     @Override

@@ -6,17 +6,17 @@ import android.text.format.DateUtils;
 import java.util.Calendar;
 import java.util.Date;
 
+import ru.rivendel.sagittarius.classes.CTask;
+
 /**
  * Created by user on 08.08.16.
  */
 
 public class DateManager {
 
-    enum PeriodType {Day,Week,Month,Year};
-
     private Date startTime;
     private Date endTime;
-    private PeriodType period;
+    public CTask.TaskPeriodType period;
 
     public DateManager() {
 
@@ -34,7 +34,7 @@ public class DateManager {
         cldr.set(Calendar.MILLISECOND,0);
         endTime = cldr.getTime();
 
-        period = PeriodType.Day;
+        period = CTask.TaskPeriodType.Day;
 
     }
 
@@ -62,4 +62,13 @@ public class DateManager {
 
     }
 
+    public long getStartTime()
+    {
+        return startTime.getTime() / 1000;
+    }
+
+    public long getEndTime()
+    {
+        return endTime.getTime() / 1000;
+    }
 }

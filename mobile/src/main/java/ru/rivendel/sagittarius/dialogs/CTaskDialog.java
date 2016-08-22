@@ -43,18 +43,10 @@ public class CTaskDialog extends DialogFragment {
             return fragment;
         }
 
-        public static CTaskDialog newInstance(CTask.TaskModeType mode, int lst) {
+        public static CTaskDialog newInstance(CTask.TaskModeType mode, CTask.TaskPeriodType period, int lst) {
             CTaskDialog fragment = new CTaskDialog();
             Bundle args = new Bundle();
             args.putInt("task_mode",mode.ordinal());
-            args.putInt("listener", lst);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public static CTaskDialog newInstance(CTask.TaskPeriodType period, int lst) {
-            CTaskDialog fragment = new CTaskDialog();
-            Bundle args = new Bundle();
             args.putInt("task_period",period.ordinal());
             args.putInt("listener", lst);
             fragment.setArguments(args);
@@ -67,13 +59,9 @@ public class CTaskDialog extends DialogFragment {
             Bundle param = getArguments();
             int _id_task = param.getInt("_id_task",0);
             if (_id_task == 0) {
-                if (param.getInt("task_mode",-1) != -1) {
-                    CTask.TaskModeType mode = CTask.TaskModeType.values()[param.getInt("task_mode", 0)];
-                    task = new CTask(Environment.topicList.topic._id, mode, CTask.TaskPeriodType.Daily);
-                } else {
-                    CTask.TaskPeriodType period = CTask.TaskPeriodType.values()[param.getInt("task_period", 0)];
-                    task = new CTask(Environment.topicList.topic._id, CTask.TaskModeType.Task, period);
-                }
+                CTask.TaskModeType mode = CTask.TaskModeType.values()[param.getInt("task_mode", 0)];
+                CTask.TaskPeriodType period = CTask.TaskPeriodType.values()[param.getInt("task_period", 0)];
+                task = new CTask(Environment.topicList.topic._id, mode, period);
             } else {
                 task = new CTask(_id_task);
             }
@@ -98,9 +86,9 @@ public class CTaskDialog extends DialogFragment {
             final RadioGroup periodRadio = (RadioGroup) view.findViewById(R.id.period_radio_group);
             switch (task.period) {
                 case Single: periodRadio.check(R.id.period_button_1); break;
-                case Daily: periodRadio.check(R.id.period_button_2); break;
-                case Weekly: periodRadio.check(R.id.period_button_3); break;
-                case Monthly: periodRadio.check(R.id.period_button_4); break;
+                case Day: periodRadio.check(R.id.period_button_2); break;
+                case Week: periodRadio.check(R.id.period_button_3); break;
+                case Month: periodRadio.check(R.id.period_button_4); break;
             }
 
             final RadioGroup modeRadio = (RadioGroup) view.findViewById(R.id.mode_radio_group);
@@ -119,9 +107,9 @@ public class CTaskDialog extends DialogFragment {
                             task.count = Integer.parseInt(countText.getText().toString());
                             switch (periodRadio.getCheckedRadioButtonId()) {
                                 case R.id.period_button_1: task.period = CTask.TaskPeriodType.Single; break;
-                                case R.id.period_button_2: task.period = CTask.TaskPeriodType.Daily; break;
-                                case R.id.period_button_3: task.period = CTask.TaskPeriodType.Weekly; break;
-                                case R.id.period_button_4: task.period = CTask.TaskPeriodType.Monthly; break;
+                                case R.id.period_button_2: task.period = CTask.TaskPeriodType.Day; break;
+                                case R.id.period_button_3: task.period = CTask.TaskPeriodType.Week; break;
+                                case R.id.period_button_4: task.period = CTask.TaskPeriodType.Month; break;
                             }
                             switch (modeRadio.getCheckedRadioButtonId()) {
                                 case R.id.mode_button_1: task.mode = CTask.TaskModeType.Task; break;

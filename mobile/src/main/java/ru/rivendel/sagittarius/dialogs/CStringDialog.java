@@ -9,29 +9,59 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import ru.rivendel.sagittarius.Environment;
 import ru.rivendel.sagittarius.R;
+import ru.rivendel.sagittarius.classes.CTask;
 
 /**
  * Created by user on 08.08.16.
  */
+
 public class CStringDialog extends DialogFragment {
 
     private String title;
-    private String value;
-    private OnEnterListener listener;
+    private String init;
+    private int mode;
+    private OnEnterListener mListener;
 
     public interface OnEnterListener {
-        void onEnter(String str);
+        void onEnter(String str, int mode);
     }
 
     public CStringDialog() {
         super();
     }
 
-    public void setParam(String name, String init, OnEnterListener lst) {
-        title = name;
-        value = init;
-        listener = lst;
+    public static CStringDialog newInstance(String title, String init, int mode, int lst) {
+        CStringDialog fragment = new CStringDialog();
+        Bundle args = new Bundle();
+        args.putString("title",title);
+        args.putString("init",init);
+        args.putInt("listener", lst);
+        args.putInt("mode",mode);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static CStringDialog newInstance(String title, int mode, int lst) {
+        CStringDialog fragment = new CStringDialog();
+        Bundle args = new Bundle();
+        args.putString("title",title);
+        args.putInt("listener", lst);
+        args.putInt("mode",mode);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle param = getArguments();
+        title = param.getString("title","");
+        init = param.getString("init","");
+        mode = param.getInt("mode");
+        int owner = param.getInt("listener");
+        mListener = (OnEnterListener) getFragmentManager().findFragmentById(owner);
     }
 
     @Override
@@ -43,20 +73,19 @@ public class CStringDialog extends DialogFragment {
         View view  = inflater.inflate(R.layout.dialog_string, null);
 
         final EditText editText = (EditText) view.findViewById(R.id.edit_text);
-        editText.setText(value);
+        editText.setText(init);
 
         builder.setView(view)
                 .setTitle(title)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                         listener.onEnter(editText.getText().toString());
+                         mListener.onEnter(editText.getText().toString(),mode);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        //CStringDialog.this.getDialog().cancel();
-                    }
+                     }
                 });
         return builder.create();
 

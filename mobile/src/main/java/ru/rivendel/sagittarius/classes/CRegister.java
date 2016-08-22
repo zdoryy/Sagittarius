@@ -2,6 +2,7 @@ package ru.rivendel.sagittarius.classes;
 
 import android.database.Cursor;
 import ru.rivendel.sagittarius.Database;
+import ru.rivendel.sagittarius.DateManager;
 
 
 /**
@@ -11,7 +12,7 @@ import ru.rivendel.sagittarius.Database;
 public class CRegister extends ADataEntity {
 
     public int _id_task;
-    public int time;
+    public long time;
     public int value;
     public String comment;
 
@@ -21,10 +22,24 @@ public class CRegister extends ADataEntity {
         _id = 0;
     }
 
-    CRegister(int _id)
+    public CRegister(CTask task, DateManager date)
+    {
+        this();
+        _id_task = task._id;
+        time = date.getStartTime();
+    }
+
+    public CRegister(int _id)
     {
         this();
         loadMe(_id);
+    }
+
+    public static CRegister registerTask(CTask task, DateManager date)
+    {
+        CRegister reg = new CRegister(task,date);
+        reg.saveMe();
+        return reg;
     }
 
     protected void setData()
@@ -43,7 +58,7 @@ public class CRegister extends ADataEntity {
         {
             _id = c.getInt(c.getColumnIndex("_id"));
             _id_task = c.getInt(c.getColumnIndex(Database.tableRegisterIDTask));
-            time = c.getInt(c.getColumnIndex(Database.tableRegisterTime));
+            time = c.getLong(c.getColumnIndex(Database.tableRegisterTime));
             value = c.getInt(c.getColumnIndex(Database.tableRegisterValue));
             comment = c.getString(c.getColumnIndex(Database.tableRegisterComment));
         }

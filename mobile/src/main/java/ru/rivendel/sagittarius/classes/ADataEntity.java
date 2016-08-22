@@ -10,6 +10,7 @@ import ru.rivendel.sagittarius.Environment;
  * Created by elanse on 01.08.16.
  */
 public abstract class ADataEntity extends ADataEventObject {
+
     public int _id;
     public String tableName;
     protected ContentValues cv;

@@ -1,29 +1,27 @@
 package ru.rivendel.sagittarius.fragments;
 
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import ru.rivendel.sagittarius.DateManager;
 import ru.rivendel.sagittarius.Environment;
 import ru.rivendel.sagittarius.MainActivity;
 import ru.rivendel.sagittarius.R;
-import ru.rivendel.sagittarius.Settings;
+import ru.rivendel.sagittarius.classes.ADataEntity;
 import ru.rivendel.sagittarius.classes.ATaskListAdapter;
+import ru.rivendel.sagittarius.classes.CNote;
+import ru.rivendel.sagittarius.classes.CRegister;
 import ru.rivendel.sagittarius.classes.CTask;
-import ru.rivendel.sagittarius.classes.CTimerInterval;
 import ru.rivendel.sagittarius.classes.CTopic;
 import ru.rivendel.sagittarius.classes.LTask;
 import ru.rivendel.sagittarius.dialogs.CStringDialog;
@@ -33,7 +31,7 @@ import ru.rivendel.sagittarius.dialogs.CTaskDialog;
  * Created by user on 08.08.16.
  */
 
-public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
+public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStringDialog.OnEnterListener {
 
     private DateManager datePointer;
     private CTask.TaskModeType taskTab = CTask.TaskModeType.Task;
@@ -41,6 +39,12 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
     private TaskTodayAdapter taskTodayAdapter;
     private TaskOptionalAdapter taskOptionalAdapter;
     private TaskCheckAdapter taskCheckAdapter;
+
+    private ADataEntity selectedItem;
+
+    private static final int STRING_DIALOG_MODE_TOPIC = 1;
+    private static final int STRING_DIALOG_MODE_TASK_COMMENT = 2;
+    private static final int STRING_DIALOG_MODE_TASK_NOTE = 3;
 
     @Override
     public void onTaskSave() {
@@ -60,6 +64,27 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
         }
     }
 
+    public void onEnter(String str, int mode) {
+
+        switch (mode) {
+            case STRING_DIALOG_MODE_TOPIC: {
+                Environment.topicList.addTopic(str);
+                updateView(getView());
+            }; break;
+            case STRING_DIALOG_MODE_TASK_COMMENT: {
+                CTask task = (CTask) selectedItem;
+                task.commentRegisterByPerid(datePointer,str);
+                onTaskSave();
+            }; break;
+            case STRING_DIALOG_MODE_TASK_NOTE: {
+                CNote note = new CNote(str,(CTask)selectedItem);
+                note.saveMe();
+                updateView(getView());
+            }; break;
+        }
+
+    }
+
     // адаптер для списка задач на сегодня
     class TaskTodayAdapter extends ATaskListAdapter {
 
@@ -68,7 +93,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
         }
 
         public void updateList(CTopic topic, DateManager period) {
-            taskList = new LTask(topic._id,period);
+            taskList = new LTask(topic._id,CTask.TaskModeType.Task);
         }
 
         public View getView(int position, View view, ViewGroup parent) {
@@ -76,38 +101,35 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
             final CTask item = getItem(position);
             view = mInflater.inflate(R.layout.item_task, parent, false);
 
-            TextView titleView = (TextView) view.findViewById(R.id.task_title);
+            final TextView titleView = (TextView) view.findViewById(R.id.reg_title);
             titleView.setText(item.title);
 
-            Button openTaskButton = (Button) view.findViewById(R.id.open_task_button);
+            final Button checkTaskButton = (Button) view.findViewById(R.id.check_task_button);
 
-            openTaskButton.setOnClickListener(new View.OnClickListener() {
+            final CRegister reg = item.findRegisterByPeriod(datePointer);
+            if (reg != null) {
+                checkTaskButton.setTextColor(Color.GREEN);
+                titleView.setTextColor(Color.WHITE);
+                TextView commentView = (TextView) view.findViewById(R.id.task_comment);
+                commentView.setText(reg.comment);
+            }
+
+            checkTaskButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CTaskDialog dialog = CTaskDialog.newInstance(item._id,getFragmentID());
-                    dialog.show(getFragmentManager(),"EditTask");
+                    if (item.findRegisterByPeriod(datePointer) == null) {
+                        CRegister.registerTask(item,datePointer);
+                        checkTaskButton.setTextColor(Color.GREEN);
+                        titleView.setTextColor(Color.WHITE);
+                    }
                 }
             });
 
-            ImageButton openTimerButton = (ImageButton) view.findViewById(R.id.timer_button);
-            openTimerButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MainActivity activity = (MainActivity) getActivity();
-                    activity.setContent(new FTimer1());
-                }
-            });
-//
-//            final CheckBox advanceFlag = (CheckBox) view.findViewById(R.id.advanceFlag);
-//            advanceFlag.setChecked(item.advance > 0);
-//
-//            advanceFlag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton compoundButton, boolean flag) {
-//                    if (flag) item.advance = 60;
-//                    else item.advance = 0;
-//                }
-//            });
+            titleView.setTag(item);
+            checkTaskButton.setTag(item);
+
+            registerForContextMenu(titleView);
+            registerForContextMenu(checkTaskButton);
 
             return view;
 
@@ -123,7 +145,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
         }
 
         public void updateList(CTopic topic, DateManager period) {
-            taskList = new LTask(topic._id,period);
+            taskList = new LTask(topic._id,CTask.TaskModeType.Reminder);
         }
 
         public View getView(int position, View view, ViewGroup parent) {
@@ -131,7 +153,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
             final CTask item = getItem(position);
             view = mInflater.inflate(R.layout.item_task, parent, false);
 
-            TextView titleView = (TextView) view.findViewById(R.id.task_title);
+            TextView titleView = (TextView) view.findViewById(R.id.reg_title);
             titleView.setText(item.title);
 
 //            Button deleteButton = (Button) view.findViewById(R.id.delete_button);
@@ -169,7 +191,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
          }
 
         public void updateList(CTopic topic, DateManager period) {
-            taskList = new LTask(topic._id,period);
+            taskList = new LTask(topic._id,CTask.TaskModeType.Check);
         }
 
         public View getView(int position, View view, ViewGroup parent) {
@@ -177,7 +199,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
             final CTask item = getItem(position);
             view = mInflater.inflate(R.layout.item_task, parent, false);
 
-            TextView titleView = (TextView) view.findViewById(R.id.task_title);
+            TextView titleView = (TextView) view.findViewById(R.id.reg_title);
             titleView.setText(item.title);
 
 //            Button deleteButton = (Button) view.findViewById(R.id.delete_button);
@@ -251,16 +273,9 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
         topicRightbutton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                CStringDialog dialog = new CStringDialog();
-                dialog.setParam("Добавить новую тему","",new CStringDialog.OnEnterListener() {
-                    @Override
-                    public void onEnter(String str) {
-                        Environment.topicList.addTopic(str);
-                        updateView(view);
-                    }
-                });
+                CStringDialog dialog = CStringDialog.newInstance("Добавить новую тему",STRING_DIALOG_MODE_TOPIC,getFragmentID());
                 dialog.show(getFragmentManager(),"AddTopic");
-                return false;
+                return true;
             }
         });
 
@@ -317,7 +332,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
             @Override
             public void onClick(View view) {
                 MainActivity context = (MainActivity) getActivity();
-                context.setContent(new FTimer());
+                context.setContent(new FTimer1());
             }
         });
 
@@ -367,7 +382,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
     }
 
     public void addTodayTask(final View view) {
-        CTaskDialog dialog = CTaskDialog.newInstance(taskTab,getFragmentID());
+        CTaskDialog dialog = CTaskDialog.newInstance(taskTab,datePointer.period,getFragmentID());
         dialog.show(getFragmentManager(),"AddTask");
     }
 
@@ -375,6 +390,65 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener {
         MainActivity context = (MainActivity) getActivity();
         context.setContent(new FTaskManager());
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+
+        super.onCreateContextMenu(menu, view, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+
+        if (view.getId() == R.id.reg_title) {
+            selectedItem = (ADataEntity) view.getTag();
+            inflater.inflate(R.menu.task_today_item_context, menu);
+        } else if (view.getId() == R.id.check_task_button) {
+            selectedItem = (ADataEntity) view.getTag();
+            inflater.inflate(R.menu.task_today_check_context, menu);
+        }
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.menu_task_edit: {
+                CTaskDialog dialog = CTaskDialog.newInstance(selectedItem._id, getFragmentID());
+                dialog.show(getFragmentManager(), "EditTask");
+            }; break;
+
+            case R.id.menu_task_remove: {
+                selectedItem.deleteMe();
+                onTaskSave();
+            }; break;
+
+            case R.id.menu_task_timer: {
+                MainActivity context = (MainActivity) getActivity();
+                context.setContent(new FTimer1());
+            }; break;
+
+            case R.id.menu_task_comment: {
+                CStringDialog dialog = CStringDialog.newInstance("Комментарий выполения",STRING_DIALOG_MODE_TASK_COMMENT,getFragmentID());
+                dialog.show(getFragmentManager(),"AddRegisterComment");
+            }; break;
+
+            case R.id.menu_task_cancel: {
+                CTask task = (CTask) selectedItem;
+                task.cancelRegisterByPeriod(datePointer);
+                onTaskSave();
+            }; break;
+
+            case R.id.menu_task_note: {
+                CStringDialog dialog = CStringDialog.newInstance("Добавить заметку",STRING_DIALOG_MODE_TASK_NOTE,getFragmentID());
+                dialog.show(getFragmentManager(),"AddTaskNote");
+            }; break;
+
+        }
+
+        return true;
+
+    }
+
 
     public void selectTopic() {
 

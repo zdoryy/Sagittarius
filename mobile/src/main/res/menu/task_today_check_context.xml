@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_task_timer"
+        android:title="Запустить таймер" />
+    <item android:id="@+id/menu_task_comment"
+        android:title="Комментировать выполнение" />
+    <item android:id="@+id/menu_task_shift"
+        android:title="Перенести" />
+    <item android:id="@+id/menu_task_cancel"
+        android:title="Отменить выполнение" />
+</menu>

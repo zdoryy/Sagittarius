@@ -1,7 +1,12 @@
 package ru.rivendel.sagittarius.classes;
 
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+
 import ru.rivendel.sagittarius.Database;
+import ru.rivendel.sagittarius.DateManager;
+import ru.rivendel.sagittarius.Environment;
 
 /**
  * Created by user on  01.08.16.
@@ -18,7 +23,7 @@ public class CTask extends ADataEntity {
     public int alarm;
     public int time;
 
-    public enum TaskPeriodType {Single,Daily,Weekly,Monthly};
+    public enum TaskPeriodType {Single,Day,Week,Month,Year};
     public enum TaskModeType {Task,Reminder,Check};
 
     public CTask()
@@ -27,7 +32,7 @@ public class CTask extends ADataEntity {
         _id = 0;
         title = "";
         order = 0;
-        period = TaskPeriodType.Daily;
+        period = TaskPeriodType.Day;
         mode = TaskModeType.Task;
     }
 
@@ -37,7 +42,7 @@ public class CTask extends ADataEntity {
         _id = 0;
         title = name;
         order = 0;
-        period = TaskPeriodType.Daily;
+        period = TaskPeriodType.Day;
         mode = TaskModeType.Task;
     }
 
@@ -90,5 +95,58 @@ public class CTask extends ADataEntity {
         }
         return res;
     }
+
+    public CRegister findRegisterByPeriod(DateManager period)
+    {
+        String sql = "SELECT * FROM "+ Database.tableRegister+" " +
+                "WHERE "+ Database.tableRegisterIDTask + "=? AND ("+Database.tableRegisterTime+" BETWEEN ? AND ?)";
+        String[] arg = new String[] {Integer.toString(_id),Long.toString(period.getStartTime()),Long.toString(period.getEndTime())};
+        try {
+            SQLiteDatabase db = Environment.db.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sql, arg);
+            if (cursor != null) {
+                if (cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    CRegister reg  = new CRegister();
+                    reg.cursorToFields(cursor);
+                    cursor.close();
+                    return reg;
+                } else {
+                    cursor.close();
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+        catch(SQLException sql_ex)
+        {
+            return null;
+        }
+    }
+
+    public void cancelRegisterByPeriod(DateManager period)
+    {
+        String sql = "DELETE FROM "+ Database.tableRegister+" " +
+                "WHERE "+ Database.tableRegisterIDTask + "=? AND ("+Database.tableRegisterTime+" BETWEEN ? AND ?)";
+        String[] arg = new String[] {Integer.toString(_id),Long.toString(period.getStartTime()),Long.toString(period.getEndTime())};
+        try {
+            SQLiteDatabase db = Environment.db.getWritableDatabase();
+            db.execSQL(sql,arg);
+        }
+        catch(SQLException sql_ex)
+        {
+        }
+    }
+
+    public void commentRegisterByPerid(DateManager period, String comment)
+    {
+        CRegister reg = findRegisterByPeriod(period);
+        if (reg == null) reg = CRegister.registerTask(this,period);
+        reg.comment = comment;
+        reg.saveMe();
+    }
+
+    // TO DO  override deleteMe()
 
 }
