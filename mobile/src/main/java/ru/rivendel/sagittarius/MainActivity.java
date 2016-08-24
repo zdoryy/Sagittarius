@@ -2,22 +2,15 @@ package ru.rivendel.sagittarius;
 
 // ПРИВЕТ АНВАР
 
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ru.rivendel.sagittarius.classes.CTimerInterval;
 import ru.rivendel.sagittarius.classes.LTopic;
 import ru.rivendel.sagittarius.fragments.CFragment;
-import ru.rivendel.sagittarius.fragments.FTimer;
 
 public class MainActivity extends AppCompatActivity {
 

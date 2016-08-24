@@ -21,8 +21,8 @@ import ru.rivendel.sagittarius.classes.CTimerProgram;
 public class AdvancedTimer {
     private CTimerProgram tp;
     private CountDownTimer t;
-    private int id_program;
     private int indexTimer;
+    private int id_program;
     private long interval;
     private OnTimerQueueListener onTimerListener;
     private SoundPool sp;
@@ -31,6 +31,7 @@ public class AdvancedTimer {
     private final int MAX_STREAMS = 5;
     private MainActivity instance;
     private boolean runAllIntervals;
+    private int advance;
 
 
 
@@ -92,6 +93,58 @@ public class AdvancedTimer {
         return 0;
     }
 
+    private CountDownTimer createTimer(final int time, final int this_advance, final int waking)
+    {
+        advance=this_advance;
+        t = new CountDownTimer(time*1000,1000) {
+            @Override
+            public void onTick(long lRemaining) {
+
+                if (onTimerListener!=null)
+                    onTimerListener.onTimerTick(lRemaining/1000);
+                long passedTime = time*1000 - lRemaining;
+                // звук
+                if (advance>0&&(lRemaining/1000)<=(advance))
+                {
+                    instance.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            sp.play(advanceSound, 1, 1, 0, 0, 1);
+                            Log.d("myLogs","ADVANCE SOUND");
+                        }
+                    });
+                    advance=0;
+                }
+                if (passedTime/1000==interval&&waking!=0)
+                {
+                    nextInterval(time,passedTime/1000,waking);
+                    instance.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            sp.play(wakingSound, 1, 1, 0, 0, 1);
+                            Log.d("myLogs","WAKING SOUND");
+                        }
+                    });
+                }
+                Log.d("myLogs","TICK passedTime="+String.valueOf(passedTime/1000)+
+                        " interval="+interval);
+            }
+            @Override
+            public void onFinish() {
+                // звук финиш
+                Log.d("myLogs","FINISH SOUND");
+                if (onTimerListener!=null) onTimerListener.onTimerEnd();
+                if (runAllIntervals)
+                {
+                    indexTimer+=1;
+                    mainLoop();
+                } else indexTimer=0;
+
+            }
+        };
+        return t;
+    }
+
     private int mainLoop()
     {
         if (indexTimer<tp.getTimerInterval().getList().size())
@@ -101,50 +154,8 @@ public class AdvancedTimer {
                 floatingRateGen(ti.time,ti.waking);
             nextInterval(ti.time,0,ti.waking);
             if (onTimerListener!=null) onTimerListener.onTimerBegin(ti);
-            t = new CountDownTimer(ti.time*1000,1000) {
-                @Override
-                public void onTick(long lRemaining) {
-                    if (onTimerListener!=null)
-                        onTimerListener.onTimerTick(lRemaining/1000);
-                    long passedTime = ti.time*1000 - lRemaining;
-                    // звук
-                    if (ti.advance>0&&(lRemaining/1000)<=(ti.advance+1))
-                    {
-                        instance.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                sp.play(advanceSound, 1, 1, 0, 0, 1);
-                                Log.d("myLogs","ADVANCE SOUND");
-                            }
-                        });
-                        ti.advance=0;
-                    }
-                    if (passedTime/1000==interval&&ti.waking!=0)
-                    {
-                        nextInterval(ti.time,passedTime/1000,ti.waking);
-                        instance.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                sp.play(wakingSound, 1, 1, 0, 0, 1);
-                                Log.d("myLogs","WAKING SOUND");
-                            }
-                        });
-                    }
-                    Log.d("myLogs","TICK passedTime="+String.valueOf(passedTime/1000)+" interval="+interval);//String.valueOf(getInteval(ti.waking)));
-                }
-                @Override
-                public void onFinish() {
-                    // звук финиш
-                    Log.d("myLogs","FINISH SOUND");
-                    if (onTimerListener!=null) onTimerListener.onTimerEnd(ti);
-                    if (runAllIntervals)
-                    {
-                        indexTimer+=1;
-                        mainLoop();
-                    } else indexTimer=0;
-
-                }
-            }.start();
+            t = createTimer(ti.time,ti.advance,ti.waking);
+            if (t!=null) t.start();
         }
         else
         {
@@ -220,7 +231,7 @@ public class AdvancedTimer {
     {
         void onQueueEnd();
         void onTimerBegin(CTimerInterval ti);
-        void onTimerEnd(CTimerInterval ti);
+        void onTimerEnd();
         void onTimerTick(long lRemaining);
         void onTimerCancelled();
     }

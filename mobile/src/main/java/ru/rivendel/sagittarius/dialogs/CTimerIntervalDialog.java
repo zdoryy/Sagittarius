@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
+import android.support.annotation.StringDef;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,20 +21,26 @@ import ru.rivendel.sagittarius.R;
  */
 public class CTimerIntervalDialog extends DialogFragment implements View.OnClickListener {
     //View mainView;
-    CPicker3Dialog dialog3;
-    CPickerDialog dialog;
-    TextView txtHour;
-    TextView txtMinutes;
-    TextView txtSeconds;
-    TextView txtAdvance;
-    TextView txtWaking;
-    TextView txtRithm;
-    EditText txtTitle;
-    CheckBox cbAdvance;
-    CheckBox cbWaking;
-    CheckBox cbRithm;
-    TextView currentControl=null;
+    private CPicker3Dialog dialog3;
+    private CPickerDialog dialog;
+    private TextView txtHour;
+    private TextView txtMinutes;
+    private TextView txtSeconds;
+    private TextView txtAdvance;
+    private TextView txtWaking;
+    private TextView txtRithm;
+    private EditText txtTitle;
+    private CheckBox cbAdvance;
+    private CheckBox cbWaking;
+    private CheckBox cbRithm;
+    private TextView currentControl=null;
 
+    private String sHour="00";
+    private String sMinutes="00";
+    private String sSeconds="00";
+    private String sAdvance="00";
+    private String sWaking="00";
+    private String sRithm="00";
 
     public static final String retTITLE_INTERVAL = "title";
     public static final String retADVANCE = "advanced";
@@ -118,8 +126,44 @@ public class CTimerIntervalDialog extends DialogFragment implements View.OnClick
                 checkedChanging(cbWaking,txtWaking);
             }
         });
+
+        //если уже есть значения
+        txtHour.setText(sHour);
+        txtMinutes.setText(sMinutes);
+        txtSeconds.setText(sSeconds);
+
+        cbRithm.setChecked(false);
+        cbWaking.setChecked(false);
+        cbAdvance.setChecked(false);
+
+        if (Integer.valueOf(sAdvance)>0)
+        {
+            cbAdvance.setChecked(true);
+            txtAdvance.setText(String.format("%02d",Integer.valueOf(sAdvance)));
+        }
+        if (Integer.valueOf(sWaking)!=0)
+        {
+            cbWaking.setChecked(true);
+            txtWaking.setText(String.format("%02d",Math.abs(Integer.valueOf(sWaking))));
+        }
+        else if (Integer.valueOf(sRithm)>0)
+        {
+            cbRithm.setChecked(true);
+            txtRithm.setText(String.format("%02d",Integer.valueOf(sRithm)));
+        }
+        view.invalidate();
     }
 
+    public void setDialogData(String hh, String mm, String ss,
+                              String advance, String waking, String rithm)
+    {
+        sHour = hh;
+        sMinutes=mm;
+        sSeconds=ss;
+        sAdvance=advance;
+        sWaking=waking;
+        sRithm=rithm;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -129,15 +173,15 @@ public class CTimerIntervalDialog extends DialogFragment implements View.OnClick
                 Integer number1 = data.getIntExtra(dialog3.NUMBER1, -1);
                 Integer number2 = data.getIntExtra(dialog3.NUMBER2, -1);
                 Integer number3 = data.getIntExtra(dialog3.NUMBER3, -1);
-                txtHour.setText(number1.toString());
-                txtMinutes.setText(number2.toString());
-                txtSeconds.setText(number3.toString());
+                txtHour.setText(String.format("%02d",number1));
+                txtMinutes.setText(String.format("%02d",number2));
+                txtSeconds.setText(String.format("%02d",number3));
             }
             else if (requestCode== Environment.TI_REQUEST_NUMBER)
             {
                 if (currentControl!=null) {
                     Integer number = data.getIntExtra(dialog.NUMBER,-1);
-                    currentControl.setText(number.toString());
+                    currentControl.setText(String.format("%02d",number));
                     if (currentControl==txtRithm)
                     {
                         setNumberCheckboxStatus(txtRithm,cbRithm);
@@ -161,7 +205,7 @@ public class CTimerIntervalDialog extends DialogFragment implements View.OnClick
     {
         boolean toChecked = checkBox.isChecked();
         checkBox.setChecked(false);
-        if (toChecked==false) txtView.setText("0");
+        if (toChecked==false) txtView.setText("00");
         else dialogFor(txtView);
     }
 
@@ -174,7 +218,7 @@ public class CTimerIntervalDialog extends DialogFragment implements View.OnClick
 
     private void resetNumerCheckBoxStatus(TextView textView, CheckBox cbElement)
     {
-        textView.setText("0");
+        textView.setText("00");
         cbElement.setChecked(false);
     }
 
@@ -203,7 +247,9 @@ public class CTimerIntervalDialog extends DialogFragment implements View.OnClick
             Intent intent = new Intent();
             intent.putExtra(retTITLE_INTERVAL, txtTitle.getText().toString());
             intent.putExtra(retADVANCE,Integer.valueOf(txtAdvance.getText().toString()));
-            intent.putExtra(retWAKING,Integer.valueOf(txtWaking.getText().toString()));
+            intent.putExtra(retWAKING,cbWaking.isChecked() ?
+                    -Integer.valueOf(txtWaking.getText().toString()):
+                    Integer.valueOf(txtRithm.getText().toString()));
             intent.putExtra(retTIME,convertHHMMSStoSec(txtHour.getText().toString(),
                     txtMinutes.getText().toString(),txtSeconds.getText().toString()));
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);

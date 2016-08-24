@@ -207,13 +207,6 @@
                 android:textColor="@color/abc_secondary_text_material_dark"
                 android:textSize="32dp" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/start_timer_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@android:drawable/ic_dialog_email" />
-
 
         </RelativeLayout>
 

@@ -51,16 +51,32 @@
                 android:textStyle="bold"
                 android:textColor="@color/color_my_magenta_dark" />
 
-            <TextView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/tii_status"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/rect_status_grey"
+            <Button
+                android:layout_width="40dip"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/tii_btn_plus"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/tii_timer"
-                android:layout_toStartOf="@+id/tii_timer"
-                android:layout_marginRight="20dip" />
+                style="@style/my_LabelStyle.big"
+                android:textColor="@color/color_my_magenta_dark"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textStyle="bold" />
+
+            <Button
+                style="@style/my_LabelStyle.big"
+                android:layout_width="40dip"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:id="@+id/tii_btn_minus"
+                android:textColor="@color/color_my_magenta_dark"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/tii_timer"
+                android:layout_toEndOf="@+id/tii_timer"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -73,7 +89,8 @@
                 android:layout_width="196dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:id="@+id/relativeLayout5">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -118,6 +135,17 @@
                     android:textColor="@color/color_my_magenta_dark" />
 
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/tii_status"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/rect_status_grey"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/relativeLayout5"
+                android:layout_toStartOf="@+id/relativeLayout5" />
+
         </RelativeLayout>
     </LinearLayout>
 

@@ -327,14 +327,14 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStr
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.start_timer_button);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity context = (MainActivity) getActivity();
-                context.setContent(new FTimer1());
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.start_timer_button);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                MainActivity context = (MainActivity) getActivity();
+//                context.setContent(new FTimer());
+//            }
+//        });
 
         updateView(view);
         return view;
@@ -424,7 +424,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStr
 
             case R.id.menu_task_timer: {
                 MainActivity context = (MainActivity) getActivity();
-                context.setContent(new FTimer1());
+                context.setContent(new FTimer());
             }; break;
 
             case R.id.menu_task_comment: {
