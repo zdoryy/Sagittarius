@@ -24,6 +24,7 @@ import ru.rivendel.sagittarius.classes.CRegister;
 import ru.rivendel.sagittarius.classes.CTask;
 import ru.rivendel.sagittarius.classes.CTopic;
 import ru.rivendel.sagittarius.classes.LTask;
+import ru.rivendel.sagittarius.dialogs.CReminderDialog;
 import ru.rivendel.sagittarius.dialogs.CStringDialog;
 import ru.rivendel.sagittarius.dialogs.CTaskDialog;
 
@@ -31,13 +32,13 @@ import ru.rivendel.sagittarius.dialogs.CTaskDialog;
  * Created by user on 08.08.16.
  */
 
-public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStringDialog.OnEnterListener {
+public class FToday extends CFragment implements CTask.OnSaveListener,CStringDialog.OnEnterListener {
 
     private DateManager datePointer;
     private CTask.TaskModeType taskTab = CTask.TaskModeType.Task;
 
     private TaskTodayAdapter taskTodayAdapter;
-    private TaskOptionalAdapter taskOptionalAdapter;
+    private TaskRemainderAdapter taskRemainderAdapter;
     private TaskCheckAdapter taskCheckAdapter;
 
     private ADataEntity selectedItem;
@@ -54,8 +55,8 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStr
                 taskTodayAdapter.notifyDataSetChanged();
             } break;
             case Reminder: {
-                taskOptionalAdapter.updateList(Environment.topicList.topic,datePointer);
-                taskOptionalAdapter.notifyDataSetChanged();
+                taskRemainderAdapter.updateList(Environment.topicList.topic,datePointer);
+                taskRemainderAdapter.notifyDataSetChanged();
             } break;
             case Check: {
                 taskCheckAdapter.updateList(Environment.topicList.topic,datePointer);
@@ -138,9 +139,9 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStr
     }
 
     // адаптер для списка дополнительных задач
-    class TaskOptionalAdapter extends ATaskListAdapter {
+    class TaskRemainderAdapter extends ATaskListAdapter {
 
-        public TaskOptionalAdapter(LayoutInflater inflater) {
+        public TaskRemainderAdapter(LayoutInflater inflater) {
             super(inflater);
         }
 
@@ -280,7 +281,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStr
         });
 
         taskTodayAdapter = new TaskTodayAdapter(inflater);
-        taskOptionalAdapter = new TaskOptionalAdapter(inflater);
+        taskRemainderAdapter = new TaskRemainderAdapter(inflater);
         taskCheckAdapter = new TaskCheckAdapter(inflater);
 
         final Button tab1 = (Button) view.findViewById(R.id.tab1);
@@ -327,14 +328,14 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStr
             }
         });
 
-//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.start_timer_button);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                MainActivity context = (MainActivity) getActivity();
-//                context.setContent(new FTimer());
-//            }
-//        });
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.start_timer_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity context = (MainActivity) getActivity();
+                context.setContent(new FTimer());
+            }
+        });
 
         updateView(view);
         return view;
@@ -370,8 +371,8 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStr
                 taskList.setAdapter(taskTodayAdapter);
             } break;
             case Reminder: {
-                taskOptionalAdapter.updateList(Environment.topicList.topic,datePointer);
-                taskList.setAdapter(taskOptionalAdapter);
+                taskRemainderAdapter.updateList(Environment.topicList.topic,datePointer);
+                taskList.setAdapter(taskRemainderAdapter);
             } break;
             case Check: {
                 taskCheckAdapter.updateList(Environment.topicList.topic,datePointer);
@@ -382,8 +383,16 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStr
     }
 
     public void addTodayTask(final View view) {
-        CTaskDialog dialog = CTaskDialog.newInstance(taskTab,datePointer.period,getFragmentID());
-        dialog.show(getFragmentManager(),"AddTask");
+        switch (taskTab) {
+            case Task: {
+                CTaskDialog dialog = CTaskDialog.newInstance(datePointer.period, getFragmentID());
+                dialog.show(getFragmentManager(), "AddTask");
+            } break;
+            case Reminder: {
+                CReminderDialog dialog = CReminderDialog.newInstance(getFragmentID());
+                dialog.show(getFragmentManager(), "AddReminder");
+            } break;
+        }
     }
 
     public void openTaskManager() {
@@ -424,7 +433,7 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStr
 
             case R.id.menu_task_timer: {
                 MainActivity context = (MainActivity) getActivity();
-                context.setContent(new FTimer());
+                context.setContent(FTimer.newInstance((CTask) item));
             }; break;
 
             case R.id.menu_task_comment: {
@@ -449,13 +458,11 @@ public class FToday extends CFragment implements CTaskDialog.OnSaveListener,CStr
 
     }
 
-
     public void selectTopic() {
 
 //        CListDialog dialog = new CListDialog();
 //        dialog.show(getFragmentManager(),"TestList");
 
     }
-
 
 }

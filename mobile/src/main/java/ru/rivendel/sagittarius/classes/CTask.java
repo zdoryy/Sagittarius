@@ -26,12 +26,17 @@ public class CTask extends ADataEntity {
     public enum TaskPeriodType {Single,Day,Week,Month,Year};
     public enum TaskModeType {Task,Reminder,Check};
 
+    public interface OnSaveListener {
+        void onTaskSave();
+    }
+
     public CTask()
     {
         super(Database.tableTask);
         _id = 0;
         title = "";
         order = 0;
+        count = 1;
         period = TaskPeriodType.Day;
         mode = TaskModeType.Task;
     }
@@ -59,6 +64,30 @@ public class CTask extends ADataEntity {
         period = _period;
         mode = _mode;
         count = 1;
+    }
+
+    public void setNote(String text)
+    {
+        if (_id == 0) saveMe();
+        LNote list = new LNote(this);
+        if (list.size() > 0) {
+            CNote note = list.getList().get(0);
+            note.content = text;
+            note.saveMe();
+        } else {
+            CNote note = new CNote(text,this);
+            note.saveMe();
+        }
+    }
+
+    public String getNote()
+    {
+        if (_id == 0) return "";
+        else {
+            LNote list = new LNote(this);
+            if (list.size() > 0) return list.getList().get(0).content;
+            else return "";
+        }
     }
 
     protected void setData()

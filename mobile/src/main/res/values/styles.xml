@@ -79,4 +79,15 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="title_text">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="note_text">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:background">@color/color_advance_interval</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>

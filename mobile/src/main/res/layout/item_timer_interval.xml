@@ -57,11 +57,13 @@
                 android:text="+"
                 android:id="@+id/tii_btn_plus"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/tii_timer"
                 style="@style/my_LabelStyle.big"
                 android:textColor="@color/color_my_magenta_dark"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/tii_timer"
+                android:layout_toEndOf="@+id/tii_timer"
                 android:textStyle="bold" />
 
             <Button
@@ -71,11 +73,9 @@
                 android:text="-"
                 android:id="@+id/tii_btn_minus"
                 android:textColor="@color/color_my_magenta_dark"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/tii_timer"
-                android:layout_toEndOf="@+id/tii_timer"
+                android:layout_toLeftOf="@+id/tii_timer"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:textStyle="bold" />
 
         </RelativeLayout>

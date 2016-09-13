@@ -19,6 +19,7 @@ import ru.rivendel.sagittarius.classes.CTimerProgram;
  * Created by elanse on 05.08.16.
  */
 public class AdvancedTimer {
+
     private CTimerProgram tp;
     private CountDownTimer t;
     private int indexTimer;
@@ -32,9 +33,6 @@ public class AdvancedTimer {
     private MainActivity instance;
     private boolean runAllIntervals;
     private int advance;
-
-
-
 
     public AdvancedTimer(int id_program, MainActivity instance)
     {

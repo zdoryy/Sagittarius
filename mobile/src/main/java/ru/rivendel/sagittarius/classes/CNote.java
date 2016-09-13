@@ -39,6 +39,7 @@ public class CNote extends ADataEntity {
         this();
         content = str;
         _id_task = task._id;
+        _id_topic = task._id_topic;
     }
 
     @Override

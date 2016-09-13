@@ -24,12 +24,14 @@ import ru.rivendel.sagittarius.Environment;
 import ru.rivendel.sagittarius.MainActivity;
 import ru.rivendel.sagittarius.R;
 import ru.rivendel.sagittarius.Settings;
+import ru.rivendel.sagittarius.classes.CTask;
 import ru.rivendel.sagittarius.classes.CTimerInterval;
 import ru.rivendel.sagittarius.classes.CTimerProgram;
 import ru.rivendel.sagittarius.dialogs.CTimerIntervalDialog;
 
 
 public class FTimer extends CFragment implements AdvancedTimer.OnTimerQueueListener {
+
     private CTimerProgram timerProgram;
     private AdvancedTimer timerManager;
     private CTimerIntervalDialog dialog_interval;
@@ -125,6 +127,18 @@ public class FTimer extends CFragment implements AdvancedTimer.OnTimerQueueListe
         timerProgram = new CTimerProgram(Settings.timerProgramID);
     }
 
+    public static FTimer newInstance(CTask task)
+    {
+        FTimer timer = new FTimer();
+        timer.timerProgram = new CTimerProgram(task);
+        if (timer.timerProgram._id == 0) {
+            timer.timerProgram._id_task = task._id;
+            timer.timerProgram.saveMe();
+            Settings.timerProgramID = timer.timerProgram._id;
+            Settings.saveSettings();
+        }
+        return timer;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

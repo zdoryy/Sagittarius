@@ -6,12 +6,14 @@ import ru.rivendel.sagittarius.Database;
 /**
  * Created by elanse on 02.08.16.
  */
+
 public class LTimerProgram extends ADataSet<CTimerProgram> {
 
     public LTimerProgram()
     {
         super();
     }
+
     public LTimerProgram(int _id_task)
     {
         super("SELECT "+" * "+" from "+ Database.tableTimerProgram+" WHERE "+
@@ -23,4 +25,5 @@ public class LTimerProgram extends ADataSet<CTimerProgram> {
     CTimerProgram getNew() {
         return new CTimerProgram();
     }
+
 }

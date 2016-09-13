@@ -115,19 +115,15 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/relativeLayout3">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:padding="5sp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Notes"
-            android:id="@+id/noteText"
-            android:layout_gravity="center"
-            android:textSize="25sp"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="false"
-            android:textAlignment="center" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/start_timer_button"
+            android:layout_margin="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:src="@android:drawable/presence_away"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

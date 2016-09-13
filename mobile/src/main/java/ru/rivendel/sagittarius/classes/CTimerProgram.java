@@ -9,7 +9,7 @@ import ru.rivendel.sagittarius.Database;
  */
 public class CTimerProgram extends ADataEntity{
 
-    int _id_task;
+    public int _id_task;
     public String title;
     int _order;
     String waking_sound;
@@ -35,6 +35,26 @@ public class CTimerProgram extends ADataEntity{
             // загружаем программу из БД
             loadMe(_id);
             this._id = _id;
+        }
+    }
+
+    public static CTimerProgram newInstance(CTask task)
+    {
+        if (task._id != 0) {
+            LTimerProgram list = new LTimerProgram(task._id);
+            if (list.size() > 0) return list.getList().get(0);
+            else return new CTimerProgram();
+        } else {
+            return new CTimerProgram();
+        }
+    }
+
+    public CTimerProgram(CTask task)
+    {
+        this();
+        if (task._id != 0) {
+            LTimerProgram list = new LTimerProgram(task._id);
+
         }
     }
 

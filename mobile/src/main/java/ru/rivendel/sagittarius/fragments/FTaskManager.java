@@ -27,7 +27,7 @@ import ru.rivendel.sagittarius.dialogs.CTaskDialog;
  * Created by user on 15.08.16.
  */
 
-public class FTaskManager extends CFragment implements CTaskDialog.OnSaveListener, CStringDialog.OnEnterListener {
+public class FTaskManager extends CFragment implements CTask.OnSaveListener, CStringDialog.OnEnterListener {
 
     public enum TaskDetailType {Report,Notes,Setup,Alaram};
 
@@ -204,7 +204,7 @@ public class FTaskManager extends CFragment implements CTaskDialog.OnSaveListene
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CTaskDialog dialog = CTaskDialog.newInstance(CTask.TaskModeType.Task,periodTab,getFragmentID());
+                CTaskDialog dialog = CTaskDialog.newInstance(periodTab,getFragmentID());
                 dialog.show(getFragmentManager(),"AddTask");
             }
         });
