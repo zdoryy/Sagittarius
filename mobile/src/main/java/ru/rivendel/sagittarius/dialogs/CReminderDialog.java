@@ -110,7 +110,7 @@ public class CReminderDialog extends DialogFragment {
         });
 
         builder.setView(view)
-                .setTitle("Задание")
+                .setTitle("Напоминание")
         ;
 
         return builder.create();

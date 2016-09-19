@@ -9,6 +9,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -84,26 +87,56 @@ public class CTaskDialog extends DialogFragment {
             }
 
             builder.setView(view)
-                    .setTitle("Задание")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            task.title = titleText.getText().toString();
-                            switch (periodRadio.getCheckedRadioButtonId()) {
-                                case R.id.period_button_1: task.period = CTask.TaskPeriodType.Single; break;
-                                case R.id.period_button_2: task.period = CTask.TaskPeriodType.Day; break;
-                                case R.id.period_button_3: task.period = CTask.TaskPeriodType.Week; break;
-                                case R.id.period_button_4: task.period = CTask.TaskPeriodType.Month; break;
-                            }
-                            task.saveMe();
-                            mListener.onTaskSave();
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
-            return builder.create();
+                    .setTitle("Задание");
+
+            final CTaskDialog dialog = this;
+
+            final CheckBox alarmCheck = (CheckBox) view.findViewById(R.id.alarm_check);
+            final TextView alarmText = (TextView) view.findViewById(R.id.alarm_text);
+
+            if (task.alarm != 0) {
+                alarmCheck.setChecked(true);
+                alarmText.setText("Есть уведомления");
+            } else {
+                alarmCheck.setChecked(false);
+                alarmText.setText("");
+            }
+
+            alarmCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    CPickerDialog dlg = new CPickerDialog();
+                    dlg.show(getFragmentManager(), "AlarmSetup");
+
+                }
+            });
+
+            final Button buttonOK = (Button) view.findViewById(R.id.btnOK);
+            buttonOK.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    task.title = titleText.getText().toString();
+                    switch (periodRadio.getCheckedRadioButtonId()) {
+                        case R.id.period_button_1: task.period = CTask.TaskPeriodType.Single; break;
+                        case R.id.period_button_2: task.period = CTask.TaskPeriodType.Day; break;
+                        case R.id.period_button_3: task.period = CTask.TaskPeriodType.Week; break;
+                        case R.id.period_button_4: task.period = CTask.TaskPeriodType.Month; break;
+                    }
+                    task.saveMe();
+                    mListener.onTaskSave();
+                    dialog.dismiss();
+                }
+            });
+
+            final Button buttonCancel = (Button) view.findViewById(R.id.btnCancel);
+            buttonCancel.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+           return builder.create();
 
         }
 

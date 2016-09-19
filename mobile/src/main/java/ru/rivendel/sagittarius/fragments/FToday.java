@@ -1,7 +1,9 @@
 package ru.rivendel.sagittarius.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.design.widget.FloatingActionButton;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import ru.rivendel.sagittarius.AlarmService;
 import ru.rivendel.sagittarius.DateManager;
 import ru.rivendel.sagittarius.Environment;
 import ru.rivendel.sagittarius.MainActivity;
@@ -46,6 +49,7 @@ public class FToday extends CFragment implements CTask.OnSaveListener,CStringDia
     private static final int STRING_DIALOG_MODE_TOPIC = 1;
     private static final int STRING_DIALOG_MODE_TASK_COMMENT = 2;
     private static final int STRING_DIALOG_MODE_TASK_NOTE = 3;
+    private static final int STRING_DIALOG_MODE_REMAINDER_NOTE = 4;
 
     @Override
     public void onTaskSave() {
@@ -53,14 +57,17 @@ public class FToday extends CFragment implements CTask.OnSaveListener,CStringDia
             case Task: {
                 taskTodayAdapter.updateList(Environment.topicList.topic,datePointer);
                 taskTodayAdapter.notifyDataSetChanged();
+                AlarmService.makeNotifications(getActivity());
             } break;
             case Reminder: {
                 taskRemainderAdapter.updateList(Environment.topicList.topic,datePointer);
                 taskRemainderAdapter.notifyDataSetChanged();
+                AlarmService.makeNotifications(getActivity());
             } break;
             case Check: {
                 taskCheckAdapter.updateList(Environment.topicList.topic,datePointer);
                 taskCheckAdapter.notifyDataSetChanged();
+                AlarmService.makeNotifications(getActivity());
             } break;
         }
     }
@@ -152,31 +159,19 @@ public class FToday extends CFragment implements CTask.OnSaveListener,CStringDia
         public View getView(int position, View view, ViewGroup parent) {
 
             final CTask item = getItem(position);
-            view = mInflater.inflate(R.layout.item_task, parent, false);
+            view = mInflater.inflate(R.layout.item_remainder, parent, false);
 
-            TextView titleView = (TextView) view.findViewById(R.id.reg_title);
+            TextView titleView = (TextView) view.findViewById(R.id.task_title);
             titleView.setText(item.title);
 
-//            Button deleteButton = (Button) view.findViewById(R.id.delete_button);
-//
-//            deleteButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    //timerProgram.deleteInterval(item);
-//                }
-//            });
+            TextView commentView = (TextView) view.findViewById(R.id.task_comment);
+            commentView.setText(item.getNote());
 
-//
-//            final CheckBox advanceFlag = (CheckBox) view.findViewById(R.id.advanceFlag);
-//            advanceFlag.setChecked(item.advance > 0);
-//
-//            advanceFlag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton compoundButton, boolean flag) {
-//                    if (flag) item.advance = 60;
-//                    else item.advance = 0;
-//                }
-//            });
+            TextView countView = (TextView) view.findViewById(R.id.task_count);
+            countView.setText(Integer.toString(item.count));
+
+            view.setTag(item);
+            registerForContextMenu(view);
 
             return view;
 
@@ -344,6 +339,8 @@ public class FToday extends CFragment implements CTask.OnSaveListener,CStringDia
 
     public void updateView(View view) {
 
+        if (view == null) return;
+
         TextView dateText = (TextView) view.findViewById(R.id.dateText);
         dateText.setText(datePointer.toString(getActivity()));
 
@@ -396,8 +393,16 @@ public class FToday extends CFragment implements CTask.OnSaveListener,CStringDia
     }
 
     public void openTaskManager() {
-        MainActivity context = (MainActivity) getActivity();
-        context.setContent(new FTaskManager());
+        switch (taskTab) {
+            case Task: {
+                MainActivity context = (MainActivity) getActivity();
+                context.setContent(new FTaskManager());
+            } break;
+            case Reminder: {
+                MainActivity context = (MainActivity) getActivity();
+                context.setContent(new FNoteManager());
+            } break;
+        }
     }
 
     @Override
@@ -412,6 +417,9 @@ public class FToday extends CFragment implements CTask.OnSaveListener,CStringDia
         } else if (view.getId() == R.id.check_task_button) {
             selectedItem = (ADataEntity) view.getTag();
             inflater.inflate(R.menu.task_today_check_context, menu);
+        } else if (view.getId() == R.id.remainder_item) {
+            selectedItem = (ADataEntity) view.getTag();
+            inflater.inflate(R.menu.remainder_item_context, menu);
         }
 
     }
@@ -450,6 +458,21 @@ public class FToday extends CFragment implements CTask.OnSaveListener,CStringDia
             case R.id.menu_task_note: {
                 CStringDialog dialog = CStringDialog.newInstance("Добавить заметку",STRING_DIALOG_MODE_TASK_NOTE,getFragmentID());
                 dialog.show(getFragmentManager(),"AddTaskNote");
+            }; break;
+
+            case R.id.menu_reminder_note: {
+                CStringDialog dialog = CStringDialog.newInstance("Добавить заметку",STRING_DIALOG_MODE_REMAINDER_NOTE,getFragmentID());
+                dialog.show(getFragmentManager(),"AddReminderNote");
+            }; break;
+
+            case R.id.menu_remainder_edit: {
+                CReminderDialog dialog = CReminderDialog.newInstance(selectedItem._id, getFragmentID());
+                dialog.show(getFragmentManager(), "EditRemainder");
+            }; break;
+
+            case R.id.menu_remainder_remove: {
+                selectedItem.deleteMe();
+                onTaskSave();
             }; break;
 
         }

@@ -19,6 +19,7 @@ public class Database extends SQLiteOpenHelper {
     public static final String tableTerm = "term";                       // таблица терминов-словарь
     public static final String tableAdvice = "advice";                   // таблица рекомендаций
     public static final String tableNote = "note";                       // таблица заметок пользователя
+    public static final String tableAlarm = "alarm";                     // таблица уведомлений
 
     public static final String tableTopicTitle = "title";                // название темы
     public static final String tableTopicOrder = "_order";               // сортировка
@@ -70,6 +71,12 @@ public class Database extends SQLiteOpenHelper {
     public static final String tableNoteIDTask = "task";                // внешний ключ к таблице Task
     public static final String tableNoteIDTerm = "term";                // внешний ключ к таблице Term
     public static final String tableNoteTime = "time";                  // время создания в сек с 1970
+
+    public static final String tableAlarmTitle = "title";
+    public static final String tableAlarmTime = "time";
+    public static final String tableAlarmDate = "date";
+    public static final String tableAlarmCount = "count";
+    public static final String tableAlarmIDTask = "task";
 
     public Database(Context context) {
         super(context, dbName, null, 1);
@@ -144,6 +151,14 @@ public class Database extends SQLiteOpenHelper {
                 tableNoteIDTask + " INTEGER, " +
                 tableNoteIDTerm + " INTEGER, " +
                 tableNoteTime + " INTEGER)");
+
+        db.execSQL("CREATE TABLE " + tableAlarm + " (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                tableAlarmTitle + " TEXT, " +
+                tableAlarmDate + " TEXT, " +
+                tableAlarmTime + " INTEGER, " +
+                tableAlarmCount + " INTEGER, " +
+                tableAlarmIDTask + " INTEGER)");
 
     }
 

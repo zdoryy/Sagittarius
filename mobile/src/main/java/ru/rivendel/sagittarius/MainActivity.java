@@ -3,6 +3,7 @@ package ru.rivendel.sagittarius;
 // ПРИВЕТ АНВАР
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Environment.db = new Database(this);
-        Settings.init(getPreferences(MODE_PRIVATE));
+        Settings.init(getSharedPreferences("Sagittarius",MODE_PRIVATE));
         Environment.topicList = new LTopic();
 
         setContentView(R.layout.main);
@@ -77,12 +78,22 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.sound_on) {
+            Settings.enableNotificationSound = true;
+            Settings.saveSettings();
             return true;
         }
+
+        if (id == R.id.sound_off) {
+            Settings.enableNotificationSound = false;
+            Settings.saveSettings();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

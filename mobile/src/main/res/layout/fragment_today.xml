@@ -21,7 +21,7 @@
             android:text="8 августа 2016"
             android:id="@+id/dateText"
             android:layout_gravity="center"
-            android:textSize="25sp"
+            android:textSize="18sp"
             android:textColor="@color/colorPrimaryDark"
             android:textAlignment="center"
             android:layout_toRightOf="@+id/date_left_button"
@@ -32,10 +32,10 @@
             android:layout_height="wrap_content"
             android:padding="5sp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Труба зовет к началу важных дел"
+            android:text="Сегодняшний день прекрасен !"
             android:id="@+id/todayText"
             android:layout_gravity="center"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@color/colorPrimaryDark"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="false"
@@ -50,7 +50,7 @@
             android:text="&lt;"
             android:id="@+id/date_left_button"
             android:layout_above="@+id/todayText"
-            android:textSize="22dp" />
+            android:textSize="15dp" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:text=">"
             android:id="@+id/date_right_button"
-            android:textSize="22dp"
+            android:textSize="15dp"
             android:layout_alignTop="@+id/dateText"
             android:layout_alignRight="@+id/todayText"
             android:layout_alignEnd="@+id/todayText"
@@ -81,7 +81,7 @@
             android:text="Topic"
             android:id="@+id/topicText"
             android:layout_gravity="center"
-            android:textSize="25sp"
+            android:textSize="18sp"
             android:textColor="@color/colorPrimaryDark"
             android:layout_toRightOf="@+id/topic_left_button"
             android:layout_toLeftOf="@+id/topic_right_button"
@@ -115,16 +115,6 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/relativeLayout3">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/start_timer_button"
-            android:layout_margin="12sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:src="@android:drawable/presence_away"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -148,21 +138,21 @@
                 android:layout_width="0sp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Today"
+                android:text="Сделать"
                 android:id="@+id/tab1"
                 style="@style/tab_bar_button" />
             <Button
                 android:layout_width="0sp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Notes"
+                android:text="Напомнить"
                 android:id="@+id/tab2"
                 style="@style/tab_bar_button" />
             <Button
                 android:layout_width="0sp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Report"
+                android:text="Анкета"
                 android:id="@+id/tab3"
                 style="@style/tab_bar_button" />
 
@@ -202,6 +192,15 @@
                 android:background="@color/wallet_hint_foreground_holo_light"
                 android:textColor="@color/abc_secondary_text_material_dark"
                 android:textSize="32dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/start_timer_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:src="@android:drawable/presence_away"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
 
 
         </RelativeLayout>

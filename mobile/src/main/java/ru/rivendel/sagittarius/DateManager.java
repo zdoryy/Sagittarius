@@ -71,4 +71,34 @@ public class DateManager {
     {
         return endTime.getTime() / 1000;
     }
+
+    public static long getMillisOfMidnight() {
+
+        Calendar cldr = Calendar.getInstance();
+
+        cldr.set(Calendar.HOUR_OF_DAY,0);
+        cldr.set(Calendar.MINUTE,0);
+        cldr.set(Calendar.SECOND,0);
+        cldr.set(Calendar.MILLISECOND,0);
+        long midnight = cldr.getTime().getTime();
+
+        return midnight;
+
+    }
+
+    public static long getMillisFromMidnight() {
+
+        Calendar cldr = Calendar.getInstance();
+        long now = cldr.getTime().getTime();
+
+        cldr.set(Calendar.HOUR_OF_DAY,0);
+        cldr.set(Calendar.MINUTE,0);
+        cldr.set(Calendar.SECOND,0);
+        cldr.set(Calendar.MILLISECOND,0);
+        long midnight = cldr.getTime().getTime();
+
+        return now - midnight;
+
+    }
+
 }

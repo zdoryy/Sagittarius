@@ -2,6 +2,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/dialog_back"
     android:weightSum="1">
     <EditText
         android:id="@+id/title_text"
@@ -12,6 +13,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:hint="Введите название"
+        style="@style/title_text"
         android:singleLine="true" />
     <TextView
         android:layout_width="match_parent"
@@ -46,6 +48,14 @@
         android:id="@+id/period_button_4" />
     </RadioGroup>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Настройка уведомлений"
+        android:id="@+id/textView5"
+        android:paddingLeft="7dp" />
+
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,26 +68,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Заметки:"
-        android:id="@+id/textView4"
+        android:text="Напоминать с 12-00 по 15-00"
+        android:id="@+id/alarm_text"
         android:paddingLeft="7dp" />
 
-    <TextView
+    <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/note_text"
-        android:padding="12dp"
-        android:lines="3"
-        android:background="@color/abc_search_url_text_normal"
-        android:enabled="true"
-        android:editable="true" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Topic"
-        android:id="@+id/topic_text"
-        android:paddingLeft="7dp" />
+        android:layout_margin="5dip">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ОТМЕНА"
+            android:id="@+id/btnCancel"
+            android:layout_weight="0.5"
+            style="@style/my_Button_other" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ОК"
+            android:id="@+id/btnOK"
+            android:layout_weight="0.5"
+            style="@style/my_Button_ok" />
+    </TableRow>
 
 </LinearLayout>
