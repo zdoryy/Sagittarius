@@ -20,6 +20,8 @@ import android.util.Log;
 
 import java.io.IOException;
 
+import ru.rivendel.sagittarius.classes.CTask;
+
 /**
  * Created by user on 14.09.16.
  */
@@ -91,11 +93,17 @@ public class AlarmReceiver extends BroadcastReceiver {
             return;
         }
 
+        if (param.getString("alarm").equalsIgnoreCase("task")) {
+            Environment.db = new Database(context);    // убрать коллизию с основной активностью по db
+            CTask task = new CTask(param.getString("id"));
+            if (task.findRegisterByPeriod(new DateManager()) != null) return;
+        }
+
         // проверяем актуальность данного увдл и режим дня
 
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Sagittarius");
-        wl.acquire();
+//        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+//        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Sagittarius");
+//        wl.acquire();
 
         Settings.init(context.getSharedPreferences("Sagittarius",context.MODE_PRIVATE));
 

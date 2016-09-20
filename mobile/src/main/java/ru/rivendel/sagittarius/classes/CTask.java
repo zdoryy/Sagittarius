@@ -37,6 +37,7 @@ public class CTask extends ADataEntity {
         title = "";
         order = 0;
         count = 1;
+        alarm = -1;
         period = TaskPeriodType.Day;
         mode = TaskModeType.Task;
     }
@@ -47,6 +48,7 @@ public class CTask extends ADataEntity {
         _id = 0;
         title = name;
         order = 0;
+        alarm = -1;
         period = TaskPeriodType.Day;
         mode = TaskModeType.Task;
     }
@@ -64,6 +66,7 @@ public class CTask extends ADataEntity {
         period = _period;
         mode = _mode;
         count = 1;
+        alarm = -1;
     }
 
     public void setNote(String text)

@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import ru.rivendel.sagittarius.DateManager;
 import ru.rivendel.sagittarius.Environment;
 import ru.rivendel.sagittarius.R;
 import ru.rivendel.sagittarius.classes.CTask;
@@ -28,6 +30,9 @@ public class CTaskDialog extends DialogFragment {
 
     private CTask task;
     private CTask.OnSaveListener mListener;
+    private TextView alarmText;
+
+    final static int ON_ALARM_SAVE = 1;
 
         public CTaskDialog() {
             super();
@@ -92,11 +97,12 @@ public class CTaskDialog extends DialogFragment {
             final CTaskDialog dialog = this;
 
             final CheckBox alarmCheck = (CheckBox) view.findViewById(R.id.alarm_check);
-            final TextView alarmText = (TextView) view.findViewById(R.id.alarm_text);
+            alarmText = (TextView) view.findViewById(R.id.alarm_text);
 
-            if (task.alarm != 0) {
+            if (task.alarm != -1) {
                 alarmCheck.setChecked(true);
-                alarmText.setText("Есть уведомления");
+                alarmText.setText("Уведомлять с " + DateManager.timeToString(DateManager.getStartTaskAlarmTime(task.time,task.alarm))+
+                                  " по " + DateManager.timeToString(DateManager.getEndTaskAlarmTime(task.time,task.alarm)));
             } else {
                 alarmCheck.setChecked(false);
                 alarmText.setText("");
@@ -105,8 +111,14 @@ public class CTaskDialog extends DialogFragment {
             alarmCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    CPickerDialog dlg = new CPickerDialog();
-                    dlg.show(getFragmentManager(), "AlarmSetup");
+                    if (b) {
+                        CAlarmDialog dlg = CAlarmDialog.newInstance(task);
+                        dlg.setTargetFragment(dialog,ON_ALARM_SAVE);
+                        dlg.show(getFragmentManager(), "AlarmSetup");
+                    } else {
+                        alarmText.setText("");
+                        task.alarm = -1;
+                    }
 
                 }
             });
@@ -122,6 +134,7 @@ public class CTaskDialog extends DialogFragment {
                         case R.id.period_button_3: task.period = CTask.TaskPeriodType.Week; break;
                         case R.id.period_button_4: task.period = CTask.TaskPeriodType.Month; break;
                     }
+                    if (!alarmCheck.isChecked()) task.alarm = -1;
                     task.saveMe();
                     mListener.onTaskSave();
                     dialog.dismiss();
@@ -140,4 +153,19 @@ public class CTaskDialog extends DialogFragment {
 
         }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case ON_ALARM_SAVE:
+                    task.time = data.getIntExtra("time",0);
+                    task.alarm = data.getIntExtra("alarm",-1);
+                    alarmText.setText("Уведомлять с " + DateManager.timeToString(DateManager.getStartTaskAlarmTime(task.time,task.alarm))+
+                            " по " + DateManager.timeToString(DateManager.getEndTaskAlarmTime(task.time,task.alarm)));
+                    break;
+            }
+        }
     }
+
+}

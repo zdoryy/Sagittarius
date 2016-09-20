@@ -101,4 +101,31 @@ public class DateManager {
 
     }
 
+    public static int getStartTaskAlarmTime(int time, int alarm) {
+
+        int start = time - alarm; // все в секундах
+        if (start < Settings.wakeTime) start = Settings.wakeTime;
+
+        return start;
+
+    }
+
+    public static int getEndTaskAlarmTime(int time, int alarm) {
+
+        int end = time + alarm; // все в секундах
+        if (end > Settings.sleepTime) end = Settings.sleepTime;
+
+        return end;
+
+    }
+
+    public static String timeToString(int time) {
+
+        int hour = time / 3600;
+        int min = (time - hour*3600) /60;
+
+        return Integer.toString(hour) + ":" + Integer.toString(min);
+
+    }
+
 }

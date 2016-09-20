@@ -43,6 +43,13 @@ public class LTask extends ADataSet <CTask> {
                 new String[] {Integer.toString(mode.ordinal())});
     }
 
+    // этот конструктор загружает из БД список c отбором по ключам Mode
+    public LTask(CTask.TaskModeType mode, CTask.TaskPeriodType period)
+    {
+        super("SELECT "+" * "+" from "+ Database.tableTask+" WHERE "+ Database.tableTaskMode+"=? AND "+Database.tableTaskPeriod+"=?" +
+                "ORDER BY _order", new String[] {Integer.toString(mode.ordinal()),Integer.toString(period.ordinal())});
+    }
+
     @Override
     CTask getNew()
     {

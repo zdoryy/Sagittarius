@@ -40,8 +40,6 @@ public class AlarmService {
         long now = DateManager.getMillisFromMidnight();
         long midnight = DateManager.getMillisOfMidnight();
 
-        long sys = System.currentTimeMillis();
-
         int count = 0;
 
         for (CTask item: alarmList.getList()) {
@@ -69,6 +67,34 @@ public class AlarmService {
             }
         }
 
+        LTask taskList = new LTask(CTask.TaskModeType.Task,CTask.TaskPeriodType.Day);
+
+        for (CTask item: taskList.getList()) {
+            if (item.alarm != -1) {
+                int[] timeSet = getTimeInterval(item.time, item.alarm);
+                for (int time : timeSet) {
+                    long alarm = (long) time * 1000;
+                    if (alarm > now) {
+                        Intent intent = new Intent(context, AlarmReceiver.class);
+                        Bundle param = new Bundle();
+                        param.putString("alarm", "task");
+                        param.putInt("id", item._id);
+                        param.putInt("count", count);
+                        param.putString("title", item.title);
+                        param.putString("text", item.getNote());
+                        intent.putExtras(param);
+                        count = count + 1;
+                        PendingIntent pi = PendingIntent.getBroadcast(context, count, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            am.setExact(AlarmManager.RTC_WAKEUP, midnight + alarm, pi);
+                        } else {
+                            am.set(AlarmManager.RTC_WAKEUP, midnight + alarm, pi);
+                        }
+                        registerAlarm(context, item.title, midnight + alarm, count, item._id);  // LOG
+                    }
+                }
+            }
+        }
 
         Settings.alarmCounter = count;
         Settings.saveSettings();
@@ -100,6 +126,29 @@ public class AlarmService {
         }
 
         return list;
+
+    }
+
+    private static int[] getTimeInterval(int time, int alarm) {
+
+        int step = 15 * 60;
+
+        int start = DateManager.getStartTaskAlarmTime(time,alarm);
+        int end = DateManager.getEndTaskAlarmTime(time,alarm);
+
+        if (end - start < step) {
+            int[] list = new int[1];
+            list[0] = (end - start)/2 + start;
+            return list;
+        } else {
+            int count = (end - start) / step + 1;
+            int[] list = new int[count];
+            for (int i=0; i<count; i++) {
+                list[i] = start;
+                start = start + step;
+            }
+            return list;
+        }
 
     }
 

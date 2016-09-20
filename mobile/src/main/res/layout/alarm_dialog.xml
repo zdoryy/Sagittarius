@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_back"
+    android:weightSum="1">
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lblPickerDialogTitle"
+            android:layout_weight="1"
+            style="@style/my_LabelStyle.normal"
+            android:text="Выбор интервала для уведомлений"
+            android:layout_marginRight="5dip"
+            android:layout_marginLeft="5dip" />
+    </TableRow>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.19"
+        android:layout_margin="5dip">
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/numberPicker"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="c 00-00"
+            android:id="@+id/startText"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            style="@style/my_LabelStyle.normal"
+            android:layout_marginLeft="7dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="по 00-00"
+            android:id="@+id/endText"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            style="@style/my_LabelStyle.normal"
+            android:layout_marginRight="7dp" />
+    </RelativeLayout>
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spreadBar"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="5dip">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ОТМЕНА"
+            android:id="@+id/btnNO"
+            android:layout_weight="0.5"
+
+            style="@style/my_Button_other" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ОК"
+            android:id="@+id/btnYES"
+            android:layout_weight="0.5"
+
+            style="@style/my_Button_ok" />
+
+
+    </TableRow>
+</LinearLayout>
