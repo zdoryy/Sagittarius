@@ -115,19 +115,19 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pi = PendingIntent.getActivity(context,0,ntfIntent,PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context); // вопрос с Compat и часами v.4
-
-        builder.setContentIntent(pi)
-                .setSmallIcon(R.drawable.common_full_open_on_phone)
-                // большая картинка
-                .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.button_yes))
-                //.setTicker(res.getString(R.string.warning)) // текст в строке состояния
-                .setTicker("Уведомление")
-                .setWhen(System.currentTimeMillis())
-                .setAutoCancel(true)
-                //.setContentTitle(res.getString(R.string.notifytitle)) // Заголовок уведомления
-                .setContentTitle(param.getString("title"))
-                //.setContentText(res.getString(R.string.notifytext))
-                .setContentText(param.getString("text")); // Текст уведомления
+//
+//        builder.setContentIntent(pi)
+//                .setSmallIcon(R.drawable.common_full_open_on_phone)
+//                // большая картинка
+//                .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.button_yes))
+//                //.setTicker(res.getString(R.string.warning)) // текст в строке состояния
+//                .setTicker("Уведомление")
+//                .setWhen(System.currentTimeMillis())
+//                .setAutoCancel(true)
+//                //.setContentTitle(res.getString(R.string.notifytitle)) // Заголовок уведомления
+//                .setContentTitle(param.getString("title"))
+//                //.setContentText(res.getString(R.string.notifytext))
+//                .setContentText(param.getString("text")); // Текст уведомления
 
         // Notification notification = builder.getNotification(); // до API 16
         Notification notification = builder.build();
