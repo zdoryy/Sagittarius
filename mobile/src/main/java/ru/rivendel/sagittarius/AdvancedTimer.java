@@ -50,7 +50,7 @@ public class AdvancedTimer {
         createSoundPool();
     }
 
-    protected void createSoundPool() {
+    private void createSoundPool() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             createNewSoundPool();
         } else {
@@ -60,7 +60,7 @@ public class AdvancedTimer {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    protected void createNewSoundPool(){
+    private void createNewSoundPool(){
         AudioAttributes attributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_GAME)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -71,7 +71,7 @@ public class AdvancedTimer {
     }
 
     @SuppressWarnings("deprecation")
-    protected void createOldSoundPool(){
+    private void createOldSoundPool(){
         sp = new SoundPool(MAX_STREAMS,AudioManager.STREAM_MUSIC,0);
     }
 
@@ -91,6 +91,17 @@ public class AdvancedTimer {
         return 0;
     }
 
+    private void playSound(final int soundId)
+    {
+        instance.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                sp.play(soundId, 1, 1, 0, 0, 1);
+                Log.d("myLogs","ADVANCE SOUND");
+            }
+        });
+    }
+
     private CountDownTimer createTimer(final int time, final int this_advance, final int waking)
     {
         advance=this_advance;
@@ -104,25 +115,13 @@ public class AdvancedTimer {
                 // звук
                 if (advance>0&&(lRemaining/1000)<=(advance))
                 {
-                    instance.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            sp.play(advanceSound, 1, 1, 0, 0, 1);
-                            Log.d("myLogs","ADVANCE SOUND");
-                        }
-                    });
+                    playSound(advanceSound);
                     advance=0;
                 }
                 if (passedTime/1000==interval&&waking!=0)
                 {
                     nextInterval(time,passedTime/1000,waking);
-                    instance.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            sp.play(wakingSound, 1, 1, 0, 0, 1);
-                            Log.d("myLogs","WAKING SOUND");
-                        }
-                    });
+                    playSound(wakingSound);
                 }
                 Log.d("myLogs","TICK passedTime="+String.valueOf(passedTime/1000)+
                         " interval="+interval);
@@ -130,7 +129,7 @@ public class AdvancedTimer {
             @Override
             public void onFinish() {
                 // звук финиш
-                Log.d("myLogs","FINISH SOUND");
+                playSound(wakingSound);
                 if (onTimerListener!=null) onTimerListener.onTimerEnd();
                 if (runAllIntervals)
                 {
@@ -151,7 +150,11 @@ public class AdvancedTimer {
             if (ti.waking<0)
                 floatingRateGen(ti.time,ti.waking);
             nextInterval(ti.time,0,ti.waking);
-            if (onTimerListener!=null) onTimerListener.onTimerBegin(ti);
+            if (onTimerListener!=null) {
+                onTimerListener.onTimerBegin(ti);
+            }
+            // timer begin sound
+            playSound(wakingSound);
             t = createTimer(ti.time,ti.advance,ti.waking);
             if (t!=null) t.start();
         }
@@ -166,7 +169,8 @@ public class AdvancedTimer {
     {
         int l = time/Math.abs(waking);
         Random r = new Random(System.currentTimeMillis());
-        int rnd = l + (int)r.nextGaussian() * l/8;
+        int rnd;
+        rnd = l + (int)r.nextGaussian() * l/8;
         return rnd;
     }
 
@@ -215,9 +219,10 @@ public class AdvancedTimer {
 
     public void setRunIntervalIndex(int _indexTimer)
     {
-        if (tp==null) return;
-        if (_indexTimer<tp.ti.getList().size()&&_indexTimer>=0)
-            indexTimer = _indexTimer;
+        if (tp!=null) {
+            if (_indexTimer < tp.ti.getList().size() && _indexTimer >= 0)
+                indexTimer = _indexTimer;
+        }
     }
 
     public void setRunAllInterval(boolean ai)
