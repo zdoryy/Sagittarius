@@ -94,8 +94,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         if (param.getString("alarm").equalsIgnoreCase("task")) {
-            Environment.db = new Database(context);    // убрать коллизию с основной активностью по db
-            CTask task = new CTask(param.getString("id"));
+            if (Environment.db == null) Environment.db = new Database(context);    // убрать коллизию с основной активностью по db
+            CTask task = new CTask(param.getInt("id"));
             if (task.findRegisterByPeriod(new DateManager()) != null) return;
         }
 

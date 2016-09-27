@@ -3,7 +3,10 @@ package ru.rivendel.sagittarius.classes;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabaseLockedException;
 
+import ru.rivendel.sagittarius.Database;
 import ru.rivendel.sagittarius.Environment;
 
 /**
@@ -30,7 +33,7 @@ public abstract class ADataEntity extends ADataEventObject {
         try
         {
             Cursor c =
-                    Environment.db.getWritableDatabase().query(tableName,/*columns*/null,
+                    Environment.db.getReadableDatabase().query(tableName,/*columns*/null,
                             /*selection*/"_id = ?",/*selectionArgs*/new String[] {String.valueOf(_id)},
                             /*groupBy*/null,/*having*/null,/*orderBy*/null);
             if (c!=null)
@@ -56,17 +59,17 @@ public abstract class ADataEntity extends ADataEventObject {
     public int saveMe()
     {
         int retID;
+        SQLiteDatabase sqldb = Environment.db.getWritableDatabase();
         try{
             setData();
             if (_id>0)
             { // обновление
-                Environment.db.getWritableDatabase().update(tableName, cv, "_id = ?",
-                        new String[] { String.valueOf(_id) });
+                sqldb.update(tableName, cv, "_id = ?", new String[] { String.valueOf(_id) });
                 retID = _id;
             }
             else
             {  // вставка
-                retID = (int)Environment.db.getWritableDatabase().insert(tableName, null, cv);
+                retID = (int)sqldb.insert(tableName, null, cv);
                 _id=retID;
             }
             if (onSavedListener !=null) onSavedListener.onAfterSaved();
@@ -76,6 +79,7 @@ public abstract class ADataEntity extends ADataEventObject {
             retID=-1;
         }
         return retID;
+
     }
 
     public int deleteMe()

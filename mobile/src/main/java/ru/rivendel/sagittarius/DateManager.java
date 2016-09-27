@@ -22,13 +22,13 @@ public class DateManager {
 
         Calendar cldr = Calendar.getInstance();
 
-        cldr.set(Calendar.HOUR,0);
+        cldr.set(Calendar.HOUR_OF_DAY,0);
         cldr.set(Calendar.MINUTE,0);
         cldr.set(Calendar.SECOND,0);
         cldr.set(Calendar.MILLISECOND,0);
         startTime = cldr.getTime();
 
-        cldr.set(Calendar.HOUR,23);
+        cldr.set(Calendar.HOUR_OF_DAY,23);
         cldr.set(Calendar.MINUTE,59);
         cldr.set(Calendar.SECOND,59);
         cldr.set(Calendar.MILLISECOND,0);
